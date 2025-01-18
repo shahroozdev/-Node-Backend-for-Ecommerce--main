@@ -4,6 +4,7 @@ import Footer from "../../components/Footer";
 import cartimage from "../../assets/images/jewellery/pic-1.jpeg";
 import { Minus, Plus, TrashIcon } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 // const initialCartItems = [
 //   {
@@ -40,6 +41,7 @@ const Cart = () => {
   const initialCartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
   const [cartItems, setCartItems] = useState(initialCartItems);
   const navigate = useNavigate();
+  let token = localStorage.getItem('key')
 
   const increment = (id) => {
     const updatedData = cartItems.map((item) =>
@@ -71,7 +73,13 @@ const Cart = () => {
     (acc, item) => acc + item.price * item.quantity,
     0
   );
-
+  const checkoutHandle = async () => {
+    if(token){
+    navigate('/checkout')
+  }else{
+    toast.error('Need to log in first.')
+    navigate('/login')
+  }}
   return (
     <div className="pt-[5.5rem]">
       <Header />
@@ -162,7 +170,7 @@ const Cart = () => {
                 </button>
                 <button
                   className="btn primary-btn"
-                  onClick={() => navigate("/checkout")}
+                  onClick={checkoutHandle}
                 >
                   To Checkout
                 </button>
