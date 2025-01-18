@@ -18,7 +18,13 @@ dotenv.config();
 const app = express();
 
 app.use(express.json());
-app.use(cors());
+const corsOptions = {
+  origin: '*', 
+  methods: ['GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin','Access-Control-Allow-Origin'],
+};
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));  // Pre-flight request for all routes
 // Serve static files from the 'assets' folder
 app.use('/public', express.static(path.join(__dirname, 'public')));
 mongoose

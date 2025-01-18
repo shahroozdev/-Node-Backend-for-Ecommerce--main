@@ -16,9 +16,9 @@ const app = express();
 app.use(express.json());
 // Configure CORS
 const corsOptions = {
-  origin: '*',  // Replace with your frontend URL, e.g., 'https://yourdomain.com'
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  origin: '*', 
+  methods: ['GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept', 'Origin','Access-Control-Allow-Origin'],
 };
 app.use(cors(corsOptions));
 app.options("*", cors(corsOptions));  // Pre-flight request for all routes
