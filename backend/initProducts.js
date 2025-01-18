@@ -9,7 +9,7 @@ const necklaceItems = [
       price: 2500,
       description: "Throughout time humans have looked to the stars for inspiration. Handcrafted in bronze, plated in a choice of 22k Gold or Silver Rhodium, the Sirena Hoops are inspired by the creatures of the sea, an elevated representation of how distant constellations and the cosmos can find form in sculpture. ",
       category: "earrings",
-      images: ["/assets/images/earrings-1/1-1.jpg", "/assets/images/necklaces-1/1-2.jpg"],
+      images: ["/public/images/earrings-1/1-1.jpg", "/public/images/necklaces-1/1-2.jpg"],
       bestSeller: true,
     },
     {
@@ -17,7 +17,7 @@ const necklaceItems = [
       price: 2500,
       description: "Throughout time humans have looked to the stars for inspiration. Handcrafted in bronze, plated in a choice of 22k Gold or Silver Rhodium, the Sirena Hoops are inspired by the creatures of the sea, an elevated representation of how distant constellations and the cosmos can find form in sculpture. ",
       category: "necklaces",
-      images: ["/assets/images/necklaces-1/2-1.jpg", "/assets/images/necklaces-1/2-2.jpg"],
+      images: ["/public/images/necklaces-1/2-1.jpg", "/public/images/necklaces-1/2-2.jpg"],
       bestSeller: true,
     },
     {
@@ -25,7 +25,7 @@ const necklaceItems = [
       price: 2500,
       description: "Throughout time humans have looked to the stars for inspiration. Handcrafted in bronze, plated in a choice of 22k Gold or Silver Rhodium, the Sirena Hoops are inspired by the creatures of the sea, an elevated representation of how distant constellations and the cosmos can find form in sculpture. ",
       category: "necklaces",
-      images: ["/assets/images/necklaces-1/3-1.jpg", "/assets/images/necklaces-1/3-2.jpg"],
+      images: ["/public/images/necklaces-1/3-1.jpg", "/public/images/necklaces-1/3-2.jpg"],
       bestSeller: true,
     },
     {
@@ -33,7 +33,7 @@ const necklaceItems = [
       price: 2500,
       description: "Throughout time humans have looked to the stars for inspiration. Handcrafted in bronze, plated in a choice of 22k Gold or Silver Rhodium, the Sirena Hoops are inspired by the creatures of the sea, an elevated representation of how distant constellations and the cosmos can find form in sculpture. ",
       category: "necklaces",
-      images: ["/assets/images/necklaces-1/4-1.jpg", "/assets/images/necklaces-1/4-2.jpg"],
+      images: ["/public/images/necklaces-1/4-1.jpg", "/public/images/necklaces-1/4-2.jpg"],
       bestSeller: true,
     },
     {
@@ -41,7 +41,7 @@ const necklaceItems = [
       price: 2500,
       description: "Throughout time humans have looked to the stars for inspiration. Handcrafted in bronze, plated in a choice of 22k Gold or Silver Rhodium, the Sirena Hoops are inspired by the creatures of the sea, an elevated representation of how distant constellations and the cosmos can find form in sculpture. ",
       category: "necklaces",
-      images: ["/assets/images/necklaces-1/5-1.jpg", "/assets/images/necklaces-1/5-2.jpg"],
+      images: ["/public/images/necklaces-1/5-1.jpg", "/public/images/necklaces-1/5-2.jpg"],
       bestSeller: false,
     },
     {
@@ -49,7 +49,7 @@ const necklaceItems = [
       price: 2500,
       description: "Throughout time humans have looked to the stars for inspiration. Handcrafted in bronze, plated in a choice of 22k Gold or Silver Rhodium, the Sirena Hoops are inspired by the creatures of the sea, an elevated representation of how distant constellations and the cosmos can find form in sculpture. ",
       category: "necklaces",
-      images: ["/assets/images/necklaces-1/6-1.jpg", "/assets/images/necklaces-1/6-2.jpg"],
+      images: ["/public/images/necklaces-1/6-1.jpg", "/public/images/necklaces-1/6-2.jpg"],
       bestSeller: false,
     },
     {
@@ -57,7 +57,7 @@ const necklaceItems = [
       price: 2500,
       description: "Throughout time humans have looked to the stars for inspiration. Handcrafted in bronze, plated in a choice of 22k Gold or Silver Rhodium, the Sirena Hoops are inspired by the creatures of the sea, an elevated representation of how distant constellations and the cosmos can find form in sculpture. ",
       category: "necklaces",
-      images: ["/assets/images/necklaces-1/7-1.jpg", "/assets/images/necklaces-1/7-2.jpg"],
+      images: ["/public/images/necklaces-1/7-1.jpg", "/public/images/necklaces-1/7-2.jpg"],
       bestSeller: false,
     },
     {
@@ -65,7 +65,7 @@ const necklaceItems = [
       price: 2500,
       description: "Throughout time humans have looked to the stars for inspiration. Handcrafted in bronze, plated in a choice of 22k Gold or Silver Rhodium, the Sirena Hoops are inspired by the creatures of the sea, an elevated representation of how distant constellations and the cosmos can find form in sculpture. ",
       category: "necklaces",
-      images: ["/assets/images/necklaces-1/8-1.jpg", "/assets/images/necklaces-1/8-2.jpg"],
+      images: ["/public/images/necklaces-1/8-1.jpg", "/public/images/necklaces-1/8-2.jpg"],
       bestSeller: false,
     },
     {
@@ -73,7 +73,7 @@ const necklaceItems = [
       price: 2500,
       description: "Throughout time humans have looked to the stars for inspiration. Handcrafted in bronze, plated in a choice of 22k Gold or Silver Rhodium, the Sirena Hoops are inspired by the creatures of the sea, an elevated representation of how distant constellations and the cosmos can find form in sculpture. ",
       category: "necklaces",
-      images: ["/assets/images/necklaces-1/9-1.jpg", "/assets/images/necklaces-1/9-2.jpg"],
+      images: ["/public/images/necklaces-1/9-1.jpg", "/public/images/necklaces-1/9-2.jpg"],
       bestSeller: false,
     },
     {
@@ -81,7 +81,7 @@ const necklaceItems = [
       price: 2500,
       description: "Throughout time humans have looked to the stars for inspiration. Handcrafted in bronze, plated in a choice of 22k Gold or Silver Rhodium, the Sirena Hoops are inspired by the creatures of the sea, an elevated representation of how distant constellations and the cosmos can find form in sculpture. ",
       category: "necklaces",
-      images: ["/assets/images/necklaces-1/10-1.jpg", "/assets/images/necklaces-1/10-2.jpg"],
+      images: ["/public/images/necklaces-1/10-1.jpg", "/public/images/necklaces-1/10-2.jpg"],
       bestSeller: false,
     },
     {
@@ -89,7 +89,7 @@ const necklaceItems = [
       price: 2500,
       description: "Throughout time humans have looked to the stars for inspiration. Handcrafted in bronze, plated in a choice of 22k Gold or Silver Rhodium, the Sirena Hoops are inspired by the creatures of the sea, an elevated representation of how distant constellations and the cosmos can find form in sculpture. ",
       category: "necklaces",
-      images: ["/assets/images/necklaces-1/11-1.jpg", "/assets/images/necklaces-1/11-2.jpg"],
+      images: ["/public/images/necklaces-1/11-1.jpg", "/public/images/necklaces-1/11-2.jpg"],
       bestSeller: false,
     },
   ];
@@ -102,7 +102,7 @@ const earringsItems = [
       price: 2500,
       description: "Throughout time humans have looked to the stars for inspiration. Handcrafted in bronze, plated in a choice of 22k Gold or Silver Rhodium, the Sirena Hoops are inspired by the creatures of the sea, an elevated representation of how distant constellations and the cosmos can find form in sculpture.",
       category: "earrings",
-      images: ["/assets/images/earrings-1/1-1.jpg", "/assets/images/earrings-1/1-2.jpg"],
+      images: ["/public/images/earrings-1/1-1.jpg", "/public/images/earrings-1/1-2.jpg"],
       bestSeller: true,
     },
     {
@@ -110,7 +110,7 @@ const earringsItems = [
       price: 2500,
       description: "Throughout time humans have looked to the stars for inspiration. Handcrafted in bronze, plated in a choice of 22k Gold or Silver Rhodium, the Sirena Hoops are inspired by the creatures of the sea, an elevated representation of how distant constellations and the cosmos can find form in sculpture.",
       category: "earrings",
-      images: ["/assets/images/earrings-1/2-1.jpg", "/assets/images/earrings-1/2-2.jpg"],
+      images: ["/public/images/earrings-1/2-1.jpg", "/public/images/earrings-1/2-2.jpg"],
       bestSeller: false,
     },
     {
@@ -118,7 +118,7 @@ const earringsItems = [
       price: 2500,
       description: "Throughout time humans have looked to the stars for inspiration. Handcrafted in bronze, plated in a choice of 22k Gold or Silver Rhodium, the Sirena Hoops are inspired by the creatures of the sea, an elevated representation of how distant constellations and the cosmos can find form in sculpture.",
       category: "earrings",
-      images: ["/assets/images/earrings-1/3-1.jpg", "/assets/images/earrings-1/3-2.jpg"],
+      images: ["/public/images/earrings-1/3-1.jpg", "/public/images/earrings-1/3-2.jpg"],
       bestSeller: true,
     },
     {
@@ -126,7 +126,7 @@ const earringsItems = [
       price: 2500,
       description: "Throughout time humans have looked to the stars for inspiration. Handcrafted in bronze, plated in a choice of 22k Gold or Silver Rhodium, the Sirena Hoops are inspired by the creatures of the sea, an elevated representation of how distant constellations and the cosmos can find form in sculpture.",
       category: "earrings",
-      images: ["/assets/images/earrings-1/4-1.jpg", "/assets/images/earrings-1/4-2.jpg"],
+      images: ["/public/images/earrings-1/4-1.jpg", "/public/images/earrings-1/4-2.jpg"],
       bestSeller: false,
     },
     {
@@ -134,7 +134,7 @@ const earringsItems = [
       price: 2500,
       description: "Throughout time humans have looked to the stars for inspiration. Handcrafted in bronze, plated in a choice of 22k Gold or Silver Rhodium, the Sirena Hoops are inspired by the creatures of the sea, an elevated representation of how distant constellations and the cosmos can find form in sculpture.",
       category: "earrings",
-      images: ["/assets/images/earrings-1/5-1.jpg", "/assets/images/earrings-1/5-2.jpg"],
+      images: ["/public/images/earrings-1/5-1.jpg", "/public/images/earrings-1/5-2.jpg"],
       bestSeller: true,
     },
     {
@@ -142,7 +142,7 @@ const earringsItems = [
       price: 2500,
       description: "Throughout time humans have looked to the stars for inspiration. Handcrafted in bronze, plated in a choice of 22k Gold or Silver Rhodium, the Sirena Hoops are inspired by the creatures of the sea, an elevated representation of how distant constellations and the cosmos can find form in sculpture.",
       category: "earrings",
-      images: ["/assets/images/earrings-1/6-1.jpg", "/assets/images/earrings-1/6-2.jpg"],
+      images: ["/public/images/earrings-1/6-1.jpg", "/public/images/earrings-1/6-2.jpg"],
       bestSeller: false,
     },
     {
@@ -150,7 +150,7 @@ const earringsItems = [
       price: 2500,
       description: "Throughout time humans have looked to the stars for inspiration. Handcrafted in bronze, plated in a choice of 22k Gold or Silver Rhodium, the Sirena Hoops are inspired by the creatures of the sea, an elevated representation of how distant constellations and the cosmos can find form in sculpture.",
       category: "earrings",
-      images: ["/assets/images/earrings-1/7-1.jpg", "/assets/images/earrings-1/7-2.jpg"],
+      images: ["/public/images/earrings-1/7-1.jpg", "/public/images/earrings-1/7-2.jpg"],
       bestSeller: true,
     },
     {
@@ -158,7 +158,7 @@ const earringsItems = [
       price: 2500,
       description: "Throughout time humans have looked to the stars for inspiration. Handcrafted in bronze, plated in a choice of 22k Gold or Silver Rhodium, the Sirena Hoops are inspired by the creatures of the sea, an elevated representation of how distant constellations and the cosmos can find form in sculpture.",
       category: "earrings",
-      images: ["/assets/images/earrings-1/8-1.jpg", "/assets/images/earrings-1/8-2.jpg"],
+      images: ["/public/images/earrings-1/8-1.jpg", "/public/images/earrings-1/8-2.jpg"],
       bestSeller: true,
     },
     {
@@ -166,7 +166,7 @@ const earringsItems = [
       price: 2500,
       description: "Throughout time humans have looked to the stars for inspiration. Handcrafted in bronze, plated in a choice of 22k Gold or Silver Rhodium, the Sirena Hoops are inspired by the creatures of the sea, an elevated representation of how distant constellations and the cosmos can find form in sculpture.",
       category: "earrings",
-      images: ["/assets/images/earrings-1/9-1.jpg", "/assets/images/earrings-1/9-2.jpg"],
+      images: ["/public/images/earrings-1/9-1.jpg", "/public/images/earrings-1/9-2.jpg"],
       bestSeller: false,
     },
     {
@@ -174,7 +174,7 @@ const earringsItems = [
       price: 2500,
       description: "Throughout time humans have looked to the stars for inspiration. Handcrafted in bronze, plated in a choice of 22k Gold or Silver Rhodium, the Sirena Hoops are inspired by the creatures of the sea, an elevated representation of how distant constellations and the cosmos can find form in sculpture.",
       category: "earrings",
-      images: ["/assets/images/earrings-1/10-1.jpg", "/assets/images/earrings-1/10-2.jpg"],
+      images: ["/public/images/earrings-1/10-1.jpg", "/public/images/earrings-1/10-2.jpg"],
       bestSeller: true,
     },
     {
@@ -182,7 +182,7 @@ const earringsItems = [
       price: 2500,
       description: "Throughout time humans have looked to the stars for inspiration. Handcrafted in bronze, plated in a choice of 22k Gold or Silver Rhodium, the Sirena Hoops are inspired by the creatures of the sea, an elevated representation of how distant constellations and the cosmos can find form in sculpture.",
       category: "earrings",
-      images: ["/assets/images/earrings-1/11-1.jpg", "/assets/images/earrings-1/11-2.jpg"],
+      images: ["/public/images/earrings-1/11-1.jpg", "/public/images/earrings-1/11-2.jpg"],
       bestSeller: false,
     },
     {
@@ -190,7 +190,7 @@ const earringsItems = [
       price: 2500,
       description: "Throughout time humans have looked to the stars for inspiration. Handcrafted in bronze, plated in a choice of 22k Gold or Silver Rhodium, the Sirena Hoops are inspired by the creatures of the sea, an elevated representation of how distant constellations and the cosmos can find form in sculpture.",
       category: "earrings",
-      images: ["/assets/images/earrings-1/12-1.jpg", "/assets/images/earrings-1/12-2.jpg"],
+      images: ["/public/images/earrings-1/12-1.jpg", "/public/images/earrings-1/12-2.jpg"],
       bestSeller: false,
     },
     {
@@ -198,7 +198,7 @@ const earringsItems = [
       price: 2500,
       description: "Throughout time humans have looked to the stars for inspiration. Handcrafted in bronze, plated in a choice of 22k Gold or Silver Rhodium, the Sirena Hoops are inspired by the creatures of the sea, an elevated representation of how distant constellations and the cosmos can find form in sculpture.",
       category: "earrings",
-      images: ["/assets/images/earrings-1/13-1.jpg", "/assets/images/earrings-1/13-2.jpg"],
+      images: ["/public/images/earrings-1/13-1.jpg", "/public/images/earrings-1/13-2.jpg"],
       bestSeller: true,
     },
     {
@@ -206,7 +206,7 @@ const earringsItems = [
       price: 2500,
       description: "Throughout time humans have looked to the stars for inspiration. Handcrafted in bronze, plated in a choice of 22k Gold or Silver Rhodium, the Sirena Hoops are inspired by the creatures of the sea, an elevated representation of how distant constellations and the cosmos can find form in sculpture.",
       category: "earrings",
-      images: ["/assets/images/earrings-1/14-1.jpg", "/assets/images/earrings-1/14-2.jpg"],
+      images: ["/public/images/earrings-1/14-1.jpg", "/public/images/earrings-1/14-2.jpg"],
       bestSeller: false,
     },
     {
@@ -214,7 +214,7 @@ const earringsItems = [
       price: 2500,
       description: "Throughout time humans have looked to the stars for inspiration. Handcrafted in bronze, plated in a choice of 22k Gold or Silver Rhodium, the Sirena Hoops are inspired by the creatures of the sea, an elevated representation of how distant constellations and the cosmos can find form in sculpture.",
       category: "earrings",
-      images: ["/assets/images/earrings-1/15-1.jpg", "/assets/images/earrings-1/15-2.jpg"],
+      images: ["/public/images/earrings-1/15-1.jpg", "/public/images/earrings-1/15-2.jpg"],
       bestSeller: false,
     },
     {
@@ -222,7 +222,7 @@ const earringsItems = [
       price: 2500,
       description: "Throughout time humans have looked to the stars for inspiration. Handcrafted in bronze, plated in a choice of 22k Gold or Silver Rhodium, the Sirena Hoops are inspired by the creatures of the sea, an elevated representation of how distant constellations and the cosmos can find form in sculpture.",
       category: "earrings",
-      images: ["/assets/images/earrings-1/16-1.jpg", "/assets/images/earrings-1/16-2.jpg"],
+      images: ["/public/images/earrings-1/16-1.jpg", "/public/images/earrings-1/16-2.jpg"],
       bestSeller: false,
     },
     {
@@ -230,7 +230,7 @@ const earringsItems = [
       price: 2500,
       description: "Throughout time humans have looked to the stars for inspiration. Handcrafted in bronze, plated in a choice of 22k Gold or Silver Rhodium, the Sirena Hoops are inspired by the creatures of the sea, an elevated representation of how distant constellations and the cosmos can find form in sculpture.",
       category: "earrings",
-      images: ["/assets/images/earrings-1/17-1.jpg", "/assets/images/earrings-1/17-2.jpg"],
+      images: ["/public/images/earrings-1/17-1.jpg", "/public/images/earrings-1/17-2.jpg"],
       bestSeller: false,
     },
     {
@@ -238,7 +238,7 @@ const earringsItems = [
       price: 2500,
       description: "Throughout time humans have looked to the stars for inspiration. Handcrafted in bronze, plated in a choice of 22k Gold or Silver Rhodium, the Sirena Hoops are inspired by the creatures of the sea, an elevated representation of how distant constellations and the cosmos can find form in sculpture.",
       category: "earrings",
-      images: ["/assets/images/earrings-1/18-1.jpg", "/assets/images/earrings-1/18-2.jpg"],
+      images: ["/public/images/earrings-1/18-1.jpg", "/public/images/earrings-1/18-2.jpg"],
       bestSeller: false,
     },
     {
@@ -246,7 +246,7 @@ const earringsItems = [
       price: 2500,
       description: "Throughout time humans have looked to the stars for inspiration. Handcrafted in bronze, plated in a choice of 22k Gold or Silver Rhodium, the Sirena Hoops are inspired by the creatures of the sea, an elevated representation of how distant constellations and the cosmos can find form in sculpture.",
       category: "earrings",
-      images: ["/assets/images/earrings-1/19-1.jpg", "/assets/images/earrings-1/19-2.jpg"],
+      images: ["/public/images/earrings-1/19-1.jpg", "/public/images/earrings-1/19-2.jpg"],
       bestSeller: true,
     },
     {
@@ -254,7 +254,7 @@ const earringsItems = [
       price: 2500,
       description: "Throughout time humans have looked to the stars for inspiration. Handcrafted in bronze, plated in a choice of 22k Gold or Silver Rhodium, the Sirena Hoops are inspired by the creatures of the sea, an elevated representation of how distant constellations and the cosmos can find form in sculpture.",
       category: "earrings",
-      images: ["/assets/images/earrings-1/20-1.jpg", "/assets/images/earrings-1/20-1.jpg"],
+      images: ["/public/images/earrings-1/20-1.jpg", "/public/images/earrings-1/20-1.jpg"],
       bestSeller: false,
     },
     {
@@ -262,7 +262,7 @@ const earringsItems = [
       price: 2500,
       description: "Throughout time humans have looked to the stars for inspiration. Handcrafted in bronze, plated in a choice of 22k Gold or Silver Rhodium, the Sirena Hoops are inspired by the creatures of the sea, an elevated representation of how distant constellations and the cosmos can find form in sculpture.",
       category: "earrings",
-      images: ["/assets/images/earrings-1/21-1.jpg", "/assets/images/earrings-1/21-2.jpg"],
+      images: ["/public/images/earrings-1/21-1.jpg", "/public/images/earrings-1/21-2.jpg"],
       bestSeller: false,
     },
     {
@@ -270,7 +270,7 @@ const earringsItems = [
       price: 2500,
       description: "Throughout time humans have looked to the stars for inspiration. Handcrafted in bronze, plated in a choice of 22k Gold or Silver Rhodium, the Sirena Hoops are inspired by the creatures of the sea, an elevated representation of how distant constellations and the cosmos can find form in sculpture.",
       category: "earrings",
-      images: ["/assets/images/earrings-1/22-1.jpg", "/assets/images/earrings-1/22-2.jpg"],
+      images: ["/public/images/earrings-1/22-1.jpg", "/public/images/earrings-1/22-2.jpg"],
       bestSeller: false,
     },
   ];
@@ -283,7 +283,7 @@ const ringsItems = [
       price: 2500,
       description: "Throughout time humans have looked to the stars for inspiration. Handcrafted in bronze, plated in a choice of 22k Gold or Silver Rhodium, the Sirena Hoops are inspired by the creatures of the sea, an elevated representation of how distant constellations and the cosmos can find form in sculpture.",
       category: "rings",
-      images: ["/assets/images/rings-1/1-1.jpg", "/assets/images/rings-1/1-2.jpg"],
+      images: ["/public/images/rings-1/1-1.jpg", "/public/images/rings-1/1-2.jpg"],
       bestSeller: true,
     },
     {
@@ -292,7 +292,7 @@ const ringsItems = [
       price: 2500,
       description: "Throughout time humans have looked to the stars for inspiration. Handcrafted in bronze, plated in a choice of 22k Gold or Silver Rhodium, the Sirena Hoops are inspired by the creatures of the sea, an elevated representation of how distant constellations and the cosmos can find form in sculpture.",
       category: "rings",
-      images: ["/assets/images/rings-1/2-1.jpg", "/assets/images/rings-1/2-2.jpg"],
+      images: ["/public/images/rings-1/2-1.jpg", "/public/images/rings-1/2-2.jpg"],
       bestSeller: false,
     },
     {
@@ -301,7 +301,7 @@ const ringsItems = [
       price: 2500,
       description: "Throughout time humans have looked to the stars for inspiration. Handcrafted in bronze, plated in a choice of 22k Gold or Silver Rhodium, the Sirena Hoops are inspired by the creatures of the sea, an elevated representation of how distant constellations and the cosmos can find form in sculpture.",
       category: "rings",
-      images: ["/assets/images/rings-1/3-1.jpg", "/assets/images/rings-1/3-2.jpg"],
+      images: ["/public/images/rings-1/3-1.jpg", "/public/images/rings-1/3-2.jpg"],
       bestSeller: true,
     },
     {
@@ -310,7 +310,7 @@ const ringsItems = [
       price: 2500,
       description: "Throughout time humans have looked to the stars for inspiration. Handcrafted in bronze, plated in a choice of 22k Gold or Silver Rhodium, the Sirena Hoops are inspired by the creatures of the sea, an elevated representation of how distant constellations and the cosmos can find form in sculpture.",
       category: "rings",
-      images: ["/assets/images/rings-1/4-1.jpg", "/assets/images/rings-1/4-2.jpg"],
+      images: ["/public/images/rings-1/4-1.jpg", "/public/images/rings-1/4-2.jpg"],
       bestSeller: false,
     },
     {
@@ -319,7 +319,7 @@ const ringsItems = [
       price: 2500,
       description: "Throughout time humans have looked to the stars for inspiration. Handcrafted in bronze, plated in a choice of 22k Gold or Silver Rhodium, the Sirena Hoops are inspired by the creatures of the sea, an elevated representation of how distant constellations and the cosmos can find form in sculpture.",
       category: "rings",
-      images: ["/assets/images/rings-1/5-1.jpg", "/assets/images/rings-1/5-2.jpg"],
+      images: ["/public/images/rings-1/5-1.jpg", "/public/images/rings-1/5-2.jpg"],
       bestSeller: false,
     },
     {
@@ -328,7 +328,7 @@ const ringsItems = [
       price: 2500,
       description: "Throughout time humans have looked to the stars for inspiration. Handcrafted in bronze, plated in a choice of 22k Gold or Silver Rhodium, the Sirena Hoops are inspired by the creatures of the sea, an elevated representation of how distant constellations and the cosmos can find form in sculpture.",
       category: "rings",
-      images: ["/assets/images/rings-1/6-1.jpg", "/assets/images/rings-1/6-2.jpg"],
+      images: ["/public/images/rings-1/6-1.jpg", "/public/images/rings-1/6-2.jpg"],
       bestSeller: true,
     },
     {
@@ -337,7 +337,7 @@ const ringsItems = [
       price: 2500,
       description: "Throughout time humans have looked to the stars for inspiration. Handcrafted in bronze, plated in a choice of 22k Gold or Silver Rhodium, the Sirena Hoops are inspired by the creatures of the sea, an elevated representation of how distant constellations and the cosmos can find form in sculpture.",
       category: "rings",
-      images: ["/assets/images/rings-1/7-1.jpg", "/assets/images/rings-1/7-2.jpg"],
+      images: ["/public/images/rings-1/7-1.jpg", "/public/images/rings-1/7-2.jpg"],
       bestSeller: false,
     },
     {
@@ -346,7 +346,7 @@ const ringsItems = [
       price: 2500,
       description: "Throughout time humans have looked to the stars for inspiration. Handcrafted in bronze, plated in a choice of 22k Gold or Silver Rhodium, the Sirena Hoops are inspired by the creatures of the sea, an elevated representation of how distant constellations and the cosmos can find form in sculpture.",
       category: "rings",
-      images: ["/assets/images/rings-1/8-1.jpg", "/assets/images/rings-1/8-2.jpg"],
+      images: ["/public/images/rings-1/8-1.jpg", "/public/images/rings-1/8-2.jpg"],
       bestSeller: false,
     },
     {
@@ -355,7 +355,7 @@ const ringsItems = [
       price: 2500,
       description: "Throughout time humans have looked to the stars for inspiration. Handcrafted in bronze, plated in a choice of 22k Gold or Silver Rhodium, the Sirena Hoops are inspired by the creatures of the sea, an elevated representation of how distant constellations and the cosmos can find form in sculpture.",
       category: "rings",
-      images: ["/assets/images/rings-1/9-1.jpg", "/assets/images/rings-1/9-2.jpg"],
+      images: ["/public/images/rings-1/9-1.jpg", "/public/images/rings-1/9-2.jpg"],
       bestSeller: true,
     },
     {
@@ -364,7 +364,7 @@ const ringsItems = [
       price: 2500,
       description: "Throughout time humans have looked to the stars for inspiration. Handcrafted in bronze, plated in a choice of 22k Gold or Silver Rhodium, the Sirena Hoops are inspired by the creatures of the sea, an elevated representation of how distant constellations and the cosmos can find form in sculpture.",
       category: "rings",
-      images: ["/assets/images/rings-1/10-1.jpg", "/assets/images/rings-1/10-2.jpg"],
+      images: ["/public/images/rings-1/10-1.jpg", "/public/images/rings-1/10-2.jpg"],
       bestSeller: false,
     },
   ];
