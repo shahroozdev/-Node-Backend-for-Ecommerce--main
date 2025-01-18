@@ -14,8 +14,14 @@ dotenv.config();
 const app = express();
 
 app.use(express.json());
-app.use(cors());
-app.options("*", cors());
+// Configure CORS
+const corsOptions = {
+  origin: '*',  // Replace with your frontend URL, e.g., 'https://yourdomain.com'
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+};
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));  // Pre-flight request for all routes
 
 // Serve static files from the 'assets' folder
 app.use('/public', express.static(path.join(__dirname, 'public')));
