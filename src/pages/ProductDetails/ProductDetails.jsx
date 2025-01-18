@@ -16,6 +16,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { ChevronUp } from "lucide-react";
 import toast from "react-hot-toast";
 import apiClient from "../../lib/utils";
+import Skeleton from "../../components/ui/skeleton";
 
 const productData = {
   name: "Sirena Hoops",
@@ -82,19 +83,11 @@ const ProductDetails = () => {
       }
     };
     getAllProducts();
-    // let allProducts = earringsItems.concat(ringsItems, necklaceItems);
-    // const product = allProducts.find((item) => item.id === Number(productId));
-    // const itemExistInCart = cartData.find((item) => item.id === product.id);
-    // setProductDetails({ ...product, isInCart: Boolean(itemExistInCart) });
   }, []);
 
   const toggleAccordion = (index) => {
     setActiveIndex(activeIndex === index ? null : index);
   };
-
-  if (!productDetails) {
-    return <div>No product found</div>;
-  }
 
   const addItemToCart = () => {
     const data = { ...productDetails, isInCart: true, quantity: 1 };
@@ -119,7 +112,22 @@ const ProductDetails = () => {
   return (
     <div className="pt-[5.5rem]">
       <Header />
+      {!productDetails?      
       <section className="wrapper">
+        <div className="max-w-6xl mx-auto sm:grid grid-cols-[55%_auto] gap-7 pt-[2rem] sm:py-[4rem]">
+          <div className="w-full">
+            <Skeleton width="100%" height="300px" className="h-full" /> {/* Skeleton for image */}
+          </div>
+          <div className="w-full">
+            <Skeleton width="70%" height="30px" className="mb-4" /> {/* Skeleton for name */}
+            <Skeleton width="50%" height="20px" className="mb-4" /> {/* Skeleton for price */}
+            <Skeleton width="100%" height="50px" className="mt-4" /> {/* Skeleton for button */}
+            <Skeleton width="100%" height="40px" className="mt-4" /> {/* Skeleton for button */}
+            <Skeleton width="100%" height="60px" className="mt-4" /> {/* Skeleton for description */}
+          </div>
+        </div>
+      </section>
+      :<section className="wrapper">
         <div className="max-w-6xl mx-auto sm:grid grid-cols-[55%_auto] gap-7 pt-[2rem] sm:py-[4rem]">
           <div className="w-full">
             <Swiper
@@ -203,7 +211,7 @@ const ProductDetails = () => {
             </p>
           </div>
         </div>
-      </section>
+      </section>}
       <section>
         <div className="wrapper">
           <div className="text-black py-[4rem]">
