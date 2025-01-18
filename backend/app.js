@@ -4,11 +4,11 @@ const cors = require("cors");
 const dotenv = require("dotenv");
 const path = require("path");
 
-const authRoutes = require("../routes/auth");
-const productRoutes = require("../routes/product");
-const shippingRoutes = require("../routes/shipping");
-const coupanRoutes = require("../routes/coupon");
-const wishlistRoutes = require("../routes/wishlist");
+const authRoutes = require("./routes/auth");
+const productRoutes = require("./routes/product");
+const shippingRoutes = require("./routes/shipping");
+const coupanRoutes = require("./routes/coupon");
+const wishlistRoutes = require("./routes/wishlist");
 
 dotenv.config();
 const app = express();
