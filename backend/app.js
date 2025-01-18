@@ -15,6 +15,7 @@ const app = express();
 
 app.use(express.json());
 app.use(cors());
+app.options("*", cors());
 
 // Serve static files from the 'assets' folder
 app.use('/public', express.static(path.join(__dirname, 'public')));
