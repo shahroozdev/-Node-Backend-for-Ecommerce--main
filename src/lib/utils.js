@@ -8,7 +8,7 @@ export function cn(...inputs) {
 }
 
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:5000/api/',
+  baseURL: process.env.REACT_APP_BASE_URL+'api/',
   timeout: 50000,
   headers: {
     'Content-Type': 'application/json;charset=utf-8',
