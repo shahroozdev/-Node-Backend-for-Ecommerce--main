@@ -11,25 +11,25 @@ import "swiper/css/navigation";
 // import required modules
 import { Autoplay, Pagination, Navigation, Mousewheel } from "swiper/modules";
 
-import { earringsItems, necklaceItems, ringsItems } from "../../constant";
+// import { earringsItems, necklaceItems, ringsItems } from "../../constant";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { ChevronUp } from "lucide-react";
 import toast from "react-hot-toast";
 import apiClient from "../../lib/utils";
 import Skeleton from "../../components/ui/skeleton";
 
-const productData = {
-  name: "Sirena Hoops",
-  price: "$240",
-  dropDown: [
-    "Finish:22k Gold Plated",
-    "Finish:25k Gold Plated",
-    "Finish:27k Gold Plated",
-    "Finish:29k Gold Plated",
-  ],
-  productDescription:
-    "Throughout time humans have looked to the stars for inspiration. Handcrafted in bronze, plated in a choice of 22k Gold or Silver Rhodium, the Sirena Hoops are inspired by the creatures of the sea, an elevated representation of how distant constellations and the cosmos can find form in sculpture. ",
-};
+// const productData = {
+//   name: "Sirena Hoops",
+//   price: "$240",
+//   dropDown: [
+//     "Finish:22k Gold Plated",
+//     "Finish:25k Gold Plated",
+//     "Finish:27k Gold Plated",
+//     "Finish:29k Gold Plated",
+//   ],
+//   productDescription:
+//     "Throughout time humans have looked to the stars for inspiration. Handcrafted in bronze, plated in a choice of 22k Gold or Silver Rhodium, the Sirena Hoops are inspired by the creatures of the sea, an elevated representation of how distant constellations and the cosmos can find form in sculpture. ",
+// };
 
 const accordionData = [
   {
@@ -265,8 +265,8 @@ const ProductDetails = () => {
               Style it with
             </h2>
             <div className="max-w-4xl mx-auto mt-[1rem] grid grid-cols-2 md:grid-cols-3 gap-5">
-              {earingsItems.slice(0, 3).map((item) => (
-                <SwiperSlide className="p-3 border">
+              {earingsItems?earingsItems?.slice(0, 3).map((item) => (
+                <SwiperSlide className="p-3 border"  key={item?._id}>
                   <Link
                     to={`/product-details/${item?._id}`}
                     key={item?._id}
@@ -305,7 +305,29 @@ const ProductDetails = () => {
                     </p>
                   </div>
                 </SwiperSlide>
-              ))}
+              )):[1,2,3].map( item=>
+                <SwiperSlide className="p-3 border" key={item}>
+                <div className="relative aspect-[3/4] overflow-hidden h-fit flex flex-col transition-all duration-200 gap-2 items-center pb-[2rem] group">
+                  {/* Skeleton for "Best Seller" Tag */}
+                  <div className="absolute z-10 left-2 top-2 bg-gray-300 rounded-full w-20 h-6"></div>
+          
+                  {/* Skeleton for Images */}
+                  <div className="relative w-[95%] h-[70%] bg-gray-200 animate-pulse rounded-md overflow-hidden">
+                    <div className="absolute w-full h-full bg-gray-300 animate-pulse"></div>
+                  </div>
+          
+                  {/* Skeleton for Text: Product Name */}
+                  <div className="text-center mt-3">
+                    <div className="w-3/4 bg-gray-200 animate-pulse h-[1rem] mx-auto mb-2 rounded-md"></div>
+                  </div>
+          
+                  {/* Skeleton for Price */}
+                  <div className="text-center">
+                    <div className="w-1/2 bg-gray-200 animate-pulse h-[1rem] mx-auto rounded-md"></div>
+                  </div>
+                </div>
+              </SwiperSlide>
+              )}
             </div>
           </div>
         </div>
@@ -340,7 +362,7 @@ const ProductDetails = () => {
               modules={[Autoplay, Pagination, Navigation]}
               className="mySwiper"
             >
-              {necklaceItems.map((item) => (
+              {necklaceItems?necklaceItems.map((item) => (
                 <SwiperSlide className="p-3 border">
                   <Link
                     to={`/product-details/${item?._id}`}
@@ -380,6 +402,28 @@ const ProductDetails = () => {
                     </p>
                   </div>
                 </SwiperSlide>
+              )):[1,2,3,4,5,6,7,8,9,10].map( item =>(
+                <SwiperSlide className="p-3 border" key={item}>
+                <div className="relative aspect-[3/4] overflow-hidden h-fit flex flex-col transition-all duration-200 gap-2 items-center pb-[2rem] group">
+                  {/* Skeleton for "Best Seller" Tag */}
+                  <div className="absolute z-10 left-2 top-2 bg-gray-300 text-transparent py-1 px-2 rounded-full w-20 h-6"></div>
+          
+                  {/* Skeleton for Product Images */}
+                  <div className="relative w-[95%] h-[70%] bg-gray-200 animate-pulse rounded-md overflow-hidden">
+                    <div className="absolute w-full h-full bg-gray-300 animate-pulse"></div>
+                  </div>
+          
+                  {/* Skeleton for Product Name */}
+                  <div className="text-center mt-3">
+                    <div className="w-3/4 bg-gray-200 animate-pulse h-[1rem] mx-auto mb-2 rounded-md"></div>
+                  </div>
+          
+                  {/* Skeleton for Product Price */}
+                  <div className="text-center">
+                    <div className="w-1/2 bg-gray-200 animate-pulse h-[1rem] mx-auto rounded-md"></div>
+                  </div>
+                </div>
+              </SwiperSlide>
               ))}
             </Swiper>
           </div>
