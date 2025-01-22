@@ -16,8 +16,13 @@ const addToWishlist = async (req, res) => {
     if (!wishlist.products.includes(productId)) {
       wishlist.products.push(productId);
       await wishlist.save();
+      res.status(200).json({ message: "Product added to wishlist", wishlist });
+    }else{
+      console.log(wishlist.products, 'products')
+      wishlist.products = wishlist.products.filter((key) => key.toString() !== productId);
+      await wishlist.save();
+      res.status(200).json({ message: "Product removed from wishlist", wishlist });
     }
-    res.status(200).json({ message: "Product added to wishlist", wishlist });
   } catch (error) {
     res.status(500).json({ message: "Error adding to wishlist", error });
   }

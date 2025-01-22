@@ -8,12 +8,14 @@ const shippingSchema = new mongoose.Schema({
   state: { type: String, required: true },
   phoneNumber: { type: String, required: true },
   postalCode: { type: String, required: true },
-  country: { type: String, required: true },
+  landmark: { type: String, required: true },
   products: [
     {
-      product: { type: mongoose.Schema.Types.ObjectId, ref: "Product", required: true },
+      _id: { type: mongoose.Schema.Types.ObjectId, ref: "Product", required: true },
       quantity: { type: Number, required: true },
+      name: { type: String, required: true },
       price: { type: Number, required: true }, // Price of the product at the time of order
+      images: [{ type: String, required: false }]
     },
   ],
   totalPrice: { type: Number, required: true }, // Total price of the shipment
@@ -22,8 +24,10 @@ const shippingSchema = new mongoose.Schema({
   // carrier: { type: String }, // e.g., FedEx, UPS
   isDelivered: { type: Boolean, default: false },
   deliveredAt: { type: Date }, // Timestamp for when the shipment was delivered
-  createdAt: { type: Date, default: Date.now }, // Timestamp for when the shipment was created
-});
+
+},
+{timestamps:true}
+);
 
 const Shipping = mongoose.model("Shipping", shippingSchema);
 module.exports = Shipping;

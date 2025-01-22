@@ -15,15 +15,16 @@ const CartItems = () => {
             }`}
           >
             <div className="grid grid-cols-[30%_auto] gap-3">
-              <Link to={`/product-details/${item.id}`}>
+              <Link to={`/product-details/${item._id}`}>
                 <img
-                  src={item.img}
+                  src={process.env.REACT_APP_BASE_URL.slice(0, -1) +
+                    item?.images[0]}
                   className="h-full aspect-square object-center object-cover rounded-lg"
-                  alt={item.title}
+                  alt={item.name}
                 />
               </Link>
               <div className="flex flex-col gap-1">
-                <p className="">{item.title}</p>
+                <p className="">{item.name}</p>
                 <p className="text-sm font-light">₹{item.price} X {item.quantity}</p>
               </div>
             </div>

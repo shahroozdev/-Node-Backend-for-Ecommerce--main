@@ -29,26 +29,29 @@ const necklaceData = {
 
 const Shop = () => {
   const { category } = useParams();
-  const [allProducts, setAllProducts] =useState(null)
-  const [rings, setRings] =useState(null)
+  const [allProducts, setAllProducts] = useState(null);
+  const [rings, setRings] = useState(null);
   let products = [],
     heading,
     subHeading;
-    
-    useEffect(()=>{
-      const getAllProducts=async()=>{
-      try {
-        const res =await apiClient.get({url:`/products/byCategory/${category}`})
-        const res2 =await apiClient.get({url:`/products/byCategory/rings`})
-        setAllProducts(res?.products)
-        setRings(res2?.products)
-      } catch (error) {
-        console.log(error?.data?.message || 'error')
-      }}
-      getAllProducts();
-    },[category])
 
-    console.log(allProducts, category)
+  useEffect(() => {
+    const getAllProducts = async () => {
+      try {
+        const res = await apiClient.get({
+          url: `/products/byCategory/${category}`,
+        });
+        const res2 = await apiClient.get({ url: `/products/byCategory/rings` });
+        setAllProducts(res?.products);
+        setRings(res2?.products);
+      } catch (error) {
+        console.log(error?.data?.message || "error");
+      }
+    };
+    getAllProducts();
+  }, [category]);
+
+
   if (category === "earrings") {
     heading = earringData.heading;
     subHeading = earringData.subHeading;
@@ -76,44 +79,72 @@ const Shop = () => {
         </div>
       </section>
       <section>
-        <div className="h-10 border flex items-center justify-end px-5">
+        {/* <div className="h-10 border flex items-center justify-end px-5">
           <div className="w-[15rem] h-full max-w-[15rem] relative">
             <SortDropdown />
           </div>
-        </div>
+        </div> */}
         <div className="wrapper py-[2rem] grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 sm:gap-5">
-          {allProducts?.map((item) => {
-            return(
-            <div className="p-3 border">
-              <Link
-                to={`/product-details/${item?._id}`}
-                key={item?._id}
-                className="relative overflow-hidden aspect-[3/4] h-fit flex flex-col transition-all duration-200 gap-2 items-center pb-[2rem] group"
-              >
-                {item?.isBestSeller && (
-                  <small className="absolute z-10 left-2 top-2 bg-primary text-white py-1 px-2 rounded-full">
-                    Best Seller
-                  </small>
-                )}
-                <img
-                  src={process.env.REACT_APP_BASE_URL.slice(0, -1)+item?.images[0]}
-                  className="group-hover:opacity-100 opacity-100 absolute h-full w-[95%] group-hover:-translate-x-[105%] duration-300 object-cover"
-                  alt={item?.name}
-                  loading="lazy"
-                />
-                <img
-                  src={process.env.REACT_APP_BASE_URL.slice(0, -1)+item?.images[1]}
-                  className="group-hover:opacity-100 opacity-100 absolute h-full w-[95%] translate-x-[105%] group-hover:translate-x-0 duration-300 object-cover"
-                  alt={item?.name}
-                  loading="lazy"
-                />
-              </Link>
-              <div className="text-center">
-                <p className="uppercase desc mt-3 text-[.9rem]">{item?.name}</p>
-                <p className="text-sm text-black/60 font-light">₹{item?.price}</p>
+          {allProducts? allProducts.map((item) => {
+            return (
+              <div className="p-3 border">
+                <Link
+                  to={`/product-details/${item?._id}`}
+                  key={item?._id}
+                  className="relative overflow-hidden aspect-[3/4] h-fit flex flex-col transition-all duration-200 gap-2 items-center pb-[2rem] group"
+                >
+                  {item?.isBestSeller && (
+                    <small className="absolute z-10 left-2 top-2 bg-primary text-white py-1 px-2 rounded-full">
+                      Best Seller
+                    </small>
+                  )}
+                  <img
+                    src={
+                      process.env.REACT_APP_BASE_URL.slice(0, -1) +
+                      item?.images[0]
+                    }
+                    className="group-hover:opacity-100 opacity-100 absolute h-full w-[95%] group-hover:-translate-x-[105%] duration-300 object-cover"
+                    alt={item?.name}
+                    loading="lazy"
+                  />
+                  <img
+                    src={
+                      process.env.REACT_APP_BASE_URL.slice(0, -1) +
+                      item?.images[1]
+                    }
+                    className="group-hover:opacity-100 opacity-100 absolute h-full w-[95%] translate-x-[105%] group-hover:translate-x-0 duration-300 object-cover"
+                    alt={item?.name}
+                    loading="lazy"
+                  />
+                </Link>
+                <div className="text-center">
+                  <p className="uppercase desc mt-3 text-[.9rem]">
+                    {item?.name}
+                  </p>
+                  <p className="text-sm text-black/60 font-light">
+                    ₹{item?.price}
+                  </p>
+                </div>
+              </div>
+            );
+          }): ([1,2,3,4,5,6,7,8,9,10].map(item=>
+            <div className="relative overflow-hidden aspect-[3/4] h-fit flex flex-col transition-all duration-200 gap-2 items-center pb-[2rem] group" key={item}>
+              {/* Skeleton for the badge */}
+              <div className="absolute z-10 left-2 top-2 bg-gray-300 py-1 px-4 rounded-full animate-pulse h-[20px] w-[80px]"></div>
+
+              {/* Skeleton for images */}
+              <div className="relative w-full h-full flex items-center justify-center">
+                <div className="absolute h-full w-[95%] bg-gray-300 animate-pulse"></div>
+                <div className="absolute h-full w-[95%] bg-gray-300 animate-pulse translate-x-[105%]"></div>
+              </div>
+
+              {/* Skeleton for text */}
+              <div className="text-center w-full mt-3">
+                <div className="h-[1rem] bg-gray-300 animate-pulse w-3/4 mx-auto rounded"></div>
+                <div className="h-[0.8rem] bg-gray-300 animate-pulse w-1/2 mx-auto rounded mt-2"></div>
               </div>
             </div>
-          )})}
+          ))}
         </div>
         {/* <div className="my-[2rem] flex mx-auto w-fit">
           <Pagination
@@ -126,40 +157,66 @@ const Shop = () => {
       <section data-aos="fade-up" className="py-[2rem] wrapper text-center">
         <p className="uppercase text-xl mb-2">LATEST SOULSUN COLLECTION</p>
         <div className="grid grid-cols-2 gap-5 max-w-xl mx-auto">
-          {rings&&rings?.slice(0, 2)
-            .map(
-              (item) => (
-                <div className="p-3 border">
-                  <Link
-                    to={`/product-details/${item?._id}`}
-                    key={item?._id}
-                    className="relative overflow-hidden aspect-[3/4] h-fit flex flex-col transition-all duration-200 gap-2 items-center pb-[2rem] group"
-                  >
-                    {item?.isBestSeller && (
-                      <small className="absolute z-10 left-2 top-2 bg-primary text-white py-1 px-2 rounded-full">
-                        Best Seller
-                      </small>
-                    )}
-                    <img
-                      src={process.env.REACT_APP_BASE_URL.slice(0, -1)+item?.images[0]}
-                      className="group-hover:opacity-100 opacity-100 absolute h-full w-[95%] group-hover:-translate-x-[105%] duration-300 object-cover"
-                      alt={item?.name}
-                      loading="lazy"
-                    />
-                    <img
-                      src={process.env.REACT_APP_BASE_URL.slice(0, -1)+item?.images[1]}
-                      className="group-hover:opacity-100 opacity-100 absolute h-full w-[95%] translate-x-[105%] group-hover:translate-x-0 duration-300 object-cover"
-                      alt={item?.name}
-                      loading="lazy"
-                    />
-                  </Link>
-                  <div className="text-center">
-                    <p className="uppercase desc mt-3 text-[.9rem]">{item?.name}</p>
-                    <p className="text-sm text-black/60 font-light">₹{item?.price}</p>
-                  </div>
+          {rings ? (
+            rings?.slice(0, 2).map((item) => (
+              <div className="p-3 border">
+                <Link
+                  to={`/product-details/${item?._id}`}
+                  key={item?._id}
+                  className="relative overflow-hidden aspect-[3/4] h-fit flex flex-col transition-all duration-200 gap-2 items-center pb-[2rem] group"
+                >
+                  {item?.isBestSeller && (
+                    <small className="absolute z-10 left-2 top-2 bg-primary text-white py-1 px-2 rounded-full">
+                      Best Seller
+                    </small>
+                  )}
+                  <img
+                    src={
+                      process.env.REACT_APP_BASE_URL.slice(0, -1) +
+                      item?.images[0]
+                    }
+                    className="group-hover:opacity-100 opacity-100 absolute h-full w-[95%] group-hover:-translate-x-[105%] duration-300 object-cover"
+                    alt={item?.name}
+                    loading="lazy"
+                  />
+                  <img
+                    src={
+                      process.env.REACT_APP_BASE_URL.slice(0, -1) +
+                      item?.images[1]
+                    }
+                    className="group-hover:opacity-100 opacity-100 absolute h-full w-[95%] translate-x-[105%] group-hover:translate-x-0 duration-300 object-cover"
+                    alt={item?.name}
+                    loading="lazy"
+                  />
+                </Link>
+                <div className="text-center">
+                  <p className="uppercase desc mt-3 text-[.9rem]">
+                    {item?.name}
+                  </p>
+                  <p className="text-sm text-black/60 font-light">
+                    ₹{item?.price}
+                  </p>
                 </div>
-              )
-            )}
+              </div>
+            ))
+          ) : ([1,2].map(item=>
+            <div className="relative overflow-hidden aspect-[3/4] h-fit flex flex-col transition-all duration-200 gap-2 items-center pb-[2rem] group" key={item}>
+              {/* Skeleton for the badge */}
+              <div className="absolute z-10 left-2 top-2 bg-gray-300 py-1 px-4 rounded-full animate-pulse h-[20px] w-[80px]"></div>
+
+              {/* Skeleton for images */}
+              <div className="relative w-full h-full flex items-center justify-center">
+                <div className="absolute h-full w-[95%] bg-gray-300 animate-pulse"></div>
+                <div className="absolute h-full w-[95%] bg-gray-300 animate-pulse translate-x-[105%]"></div>
+              </div>
+
+              {/* Skeleton for text */}
+              <div className="text-center w-full mt-3">
+                <div className="h-[1rem] bg-gray-300 animate-pulse w-3/4 mx-auto rounded"></div>
+                <div className="h-[0.8rem] bg-gray-300 animate-pulse w-1/2 mx-auto rounded mt-2"></div>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
       <Footer />

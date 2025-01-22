@@ -1,56 +1,56 @@
-import React, { useState } from "react";
-import { ActionButton } from "../../../components/Button";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import pincodes from "indian-pincodes";
-
-import { State, City } from "country-state-city";
-import toast from "react-hot-toast";
-import { displayRazorpay } from "./razorpay";
+import { State } from "country-state-city";
 import apiClient from "../../../lib/utils";
 
-const ShippingAddress = ({ total, setCartItems }) => {
+const Address = () => {
   const [states, setStates] = useState(State.getStatesOfCountry("IN"));
-  const [cities, setCities] = useState(City.getCitiesOfState("IN", "KL"));
-  const cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
-
-  // const handleStateChange = (val) => {
-  //   setValue("state", val);
-  //   const selectedState = State.getStatesOfCountry("IN").find(
-  //     (state) => state.name === val
-  //   );
-  //   setCities(City.getCitiesOfState("IN", selectedState.isoCode));
-  // };
 
   const {
     register,
     handleSubmit,
-    reset,
     setValue,
+    getValues,
     setError,
     formState: { errors },
-  } = useForm({
-    mode: "all",
-    defaultValues: {
-      name: "",
-      mobile: "",
-      pincode: "",
-      address: "",
-      landmark: "",
-      city: "",
-      state: "",
-    },
-  });
+  } = useForm();
+  const setProfileData=async()=>{
+    try {
+      const res =await apiClient.get({url:`/profile`})
+      if(res.profile){
+        setValue('fullName', res?.profile?.fullName)
+        setValue('phoneNumber', res?.profile?.phoneNumber)
+        setValue('postalCode', res?.profile?.postalCode)
+        setValue('address', res?.profile?.address)
+        setValue('landmark', res?.profile?.landmark)
+        setValue('city', res?.profile?.city)
+        setValue('state', res?.profile?.state)
+      }
+    } catch (error) {
+      console.log(error?.data?.message || 'error')
+    }}
+useEffect(()=>{
+    setProfileData();
+},[])
 
   const handleFormSubmit = async(data) => {
-    displayRazorpay(total, reset, setCartItems, data);
-    // toast.success("Order Placed");
-    // reset();
+    console.log(data, 'data')
+    try {
+      const res =await apiClient.post({url:`/profile`, data})
+      if(res){
+        setProfileData();
+      }
+    } catch (error) {
+      console.log(error?.data?.message || 'error')
+    }
   };
+
+  console.log( getValues(), errors)
   return (
-    <>
+    <div className="max-w-2xl">
       <form onSubmit={handleSubmit(handleFormSubmit)}>
-        <h2 className="uppercase text-xl mb-1">Shipping Address</h2>
-        <p className="mb-3 animate_color">Estimated Delivery: 3-6 Business Days</p>
+        <p className="mb-3 text-xl">Shipping Address</p>
         <div className="flex flex-col gap-3">
           <div className="grid sm:grid-cols-2 gap-3">
             <div className="">
@@ -81,7 +81,7 @@ const ShippingAddress = ({ total, setCartItems }) => {
                 {...register("phoneNumber", {
                   required: "Mobile is required",
                   pattern: {
-                    value: /^[1-9]\d{9}$/i,
+                    value: /^[0-9]\d{9}$/i,
                     message: "Please enter a valid mobile number",
                   },
                 })}
@@ -167,21 +167,6 @@ const ShippingAddress = ({ total, setCartItems }) => {
               />
               <small className="text-red-600">{errors.city?.message}</small>
             </div>
-            {/* <div className="">
-              <label className="text-[.95rem]">Town/City</label>
-              <select
-                className="p-2 rounded-md outline-none border-2 w-full"
-                name="city"
-                id="city"
-                {...register("city", { required: true })}
-              >
-                {cities.map((city) => (
-                  <option key={city.name} value={city.name}>
-                    {city.name}
-                  </option>
-                ))}
-              </select>
-            </div> */}
             <div className="">
               <label className="text-[.95rem]">State</label>
               <select
@@ -189,7 +174,6 @@ const ShippingAddress = ({ total, setCartItems }) => {
                 name="state"
                 id="state"
                 {...register("state", { required: "State is required" })}
-                // onChange={(e) => handleStateChange(e.target.value)}
               >
                 <option defaultValue="" value="">
                   Select State
@@ -203,16 +187,13 @@ const ShippingAddress = ({ total, setCartItems }) => {
               <small className="text-red-600">{errors.state?.message}</small>
             </div>
           </div>
-          <ActionButton
-            type="submit"
-            className={"bg-black text-white text-center rounded-md"}
-          >
-            Proceed to Checkout
-          </ActionButton>
+          <button type="submit" className="btn primary-btn">
+            Update Address
+          </button>
         </div>
       </form>
-    </>
+    </div>
   );
 };
 
-export default ShippingAddress;
+export default Address;

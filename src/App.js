@@ -16,14 +16,21 @@ import { Toaster } from "react-hot-toast";
 import Login from "./pages/Login/Login";
 import Signup from "./pages/Signup/Signup";
 
-
 const Home = lazy(() => import("./pages/Home/Home"));
 const Shop = lazy(() => import("./pages/Shop/Shop"));
 const AboutUs = lazy(() => import("./pages/AboutUs/AboutUs"));
-const ProductDetails = lazy(() => import("./pages/ProductDetails/ProductDetails"));
+const ProductDetails = lazy(() =>
+  import("./pages/ProductDetails/ProductDetails")
+);
 const Checkout = lazy(() => import("./pages/Checkout/Checkout"));
 const Cart = lazy(() => import("./pages/Cart/Cart"));
-const Profile = lazy(() => import("./pages/profile/profile"));
+const AdminLogin = lazy(() => import("./pages/AdminLogin/AdminLogin"));
+const ProfileLayout = lazy(() => import("./components/ProfileLayout"));
+const UserProfile = lazy(() => import("./pages/User/UserProfile/UserProfile"));
+const Wishlist = lazy(() => import("./pages/User/Wishlist/Wishlist"));
+const Address = lazy(() => import("./pages/User/Address/Address"));
+const OrderHistory = lazy(() => import("./pages/User/OrderHistory/OrderHistory"));
+const Support = lazy(() => import("./pages/User/Support/Support"));
 
 AOS.init({
   once: true,
@@ -84,7 +91,17 @@ function App() {
 
             {/* Cart */}
             <Route path="/cart" element={<Cart />} />
-            <Route path="/profile" element={<Profile />} />
+
+            {/* Admin */}
+            <Route path="/admin/login" element={<AdminLogin />} />
+
+            <Route path="/" element={<ProfileLayout />}>
+              <Route path="profile" element={<UserProfile />} />
+              <Route path="address" element={<Address />} />
+              <Route path="orders" element={<OrderHistory />} />
+              <Route path="wishlist" element={<Wishlist />} />
+              <Route path="support" element={<Support />} />
+            </Route>
           </Routes>
         </Router>
       </Suspense>

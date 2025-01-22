@@ -100,7 +100,7 @@ const ProductDetails = () => {
   const addToWishList = async () => {
     if(token){
     try {
-      await apiClient.post({ url: `/wishlist`, body: { productId } });
+      await apiClient.post({ url: `/wishlist`, data: { productId } });
     } catch (error) {
       console.log(error?.data?.message);
     }

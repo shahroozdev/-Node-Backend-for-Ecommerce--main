@@ -19,7 +19,7 @@ const SortDropdown = () => {
 
   return (
     <>
-      <div className="relative w-full h-full">
+      <div className="relative w-full h-full z-50">
         <button
           onClick={() => setIsOpen(!isOpen)}
           className="w-full px-3 h-full bg-white border flex items-center justify-between hover:bg-gray-50"

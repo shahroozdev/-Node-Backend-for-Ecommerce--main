@@ -32,6 +32,7 @@ axiosInstance.interceptors.response.use(
   (res) => {
     if(res?.data?.token){
       localStorage.setItem('key', res?.data?.token)
+      localStorage.setItem('user', JSON.stringify(res?.data?.user))
     }
     res?.data?.message && toast.success(res?.data?.message);
       return res?.data;
@@ -43,7 +44,8 @@ axiosInstance.interceptors.response.use(
     toast.error(errMsg);
     const status = response?.status;
     if (status === 401) {
-      // userStore.getState().actions.clearUserInfoAndToken();
+      localStorage.removeItemItem('key')
+      localStorage.removeItemItem('user')
     }
     return Promise.reject(error);
   },

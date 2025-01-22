@@ -45,7 +45,7 @@ const Cart = () => {
 
   const increment = (id) => {
     const updatedData = cartItems.map((item) =>
-      item.id === id ? { ...item, quantity: item.quantity + 1 } : item
+      item._id === id ? { ...item, quantity: item.quantity + 1 } : item
     );
     localStorage.setItem("cartItems", JSON.stringify(updatedData));
     setCartItems(updatedData);
@@ -54,7 +54,7 @@ const Cart = () => {
   const decrement = (id) => {
     const updatedData = cartItems
       .map((item) =>
-        item.id === id
+        item._id === id
           ? { ...item, quantity: Math.max(item.quantity - 1, 0) }
           : item
       )
@@ -106,19 +106,20 @@ const Cart = () => {
             <div className="grid gap-6 p-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {cartItems.map((item) => (
                 <div
-                  key={item.id}
+                  key={item._id}
                   className="flex flex-col gap-5 border w-full p-6 rounded-lg shadow-sm"
                 >
-                  <Link to={`/product-details/${item.id}`}>
+                  <Link to={`/product-details/${item._id}`}>
                     <img
-                      src={item.img}
-                      alt={item.title}
+                      src={process.env.REACT_APP_BASE_URL.slice(0, -1) +
+                        item?.images[0]}
+                      alt={item.name}
                       className="w-full h-40 object-contain"
                     />
                   </Link>
                   <Link to={`/product-details/${item.id}`}>
                     <h4 className="text-xl text-start tracking-widest">
-                      {item.title}
+                      {item.name}
                     </h4>
                   </Link>
                   <h6 className="text-sm text-start tracking-widest flex items-start">
@@ -128,18 +129,18 @@ const Cart = () => {
                     {item.quantity === 1 ? (
                       <TrashIcon
                         className="cursor-pointer"
-                        onClick={() => decrement(item.id)}
+                        onClick={() => decrement(item._id)}
                       />
                     ) : (
                       <Minus
                         className="cursor-pointer"
-                        onClick={() => decrement(item.id)}
+                        onClick={() => decrement(item._id)}
                       />
                     )}
                     <p className="w-7 text-center">{item.quantity}</p>
                     <Plus
                       className="cursor-pointer"
-                      onClick={() => increment(item.id)}
+                      onClick={() => increment(item._id)}
                     />
                   </div>
                 </div>

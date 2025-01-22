@@ -81,7 +81,7 @@ const Home = () => {
                 path: "/shop/necklaces",
               },
             ].map(({ img, title, path }, index) => (
-              <div className={`${index === 2 && "sm:col-span-2"} h-full`}>
+              <div className={`${index === 2 && "sm:col-span-2"} h-full`} key={index}>
                 <div
                   className={`${
                     index === 2 ? "sm:w-1/2 w-full mx-auto" : "w-full"

@@ -1,4 +1,5 @@
 import toast from "react-hot-toast";
+import apiClient from "../../../lib/utils";
 
 function loadScript(src) {
   return new Promise((resolve) => {
@@ -15,6 +16,8 @@ function loadScript(src) {
 }
 
 export const displayRazorpay = async (amount, reset, setCartItems,data) => {
+  const cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+
   try {
     // Load Razorpay script
     const res = await loadScript(
@@ -48,12 +51,15 @@ export const displayRazorpay = async (amount, reset, setCartItems,data) => {
       theme: {
         color: "#CBA85C",
       },
-      handler: function (response) {
-        console.log("Payment successful", response);
-        localStorage.clear();
-        setCartItems([]);
-        reset();
-        toast.success("Order placed successfully");
+      handler: async function (response) {
+        const res = await apiClient.post({url:`/shipping`, data:{...data, products:cartItems}})
+        if(res.shipping){
+          console.log("Payment successful", response);
+          localStorage.removeItem('cartItems');
+          setCartItems([]);
+          reset();
+          toast.success("Order placed successfully");
+        }
       },
       modal: {
         ondismiss: function () {

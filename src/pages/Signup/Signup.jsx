@@ -77,7 +77,7 @@ const Signup = () => {
             />
           </div>
           <small className="text-red-600">{errors.email?.message}</small>
-          <div className="border w-full pl-4 py-3 mt-5 focus-within:border-[#1C1B1B]">
+          <div className="flex justify-between border w-full pl-4 py-3 mt-5 focus-within:border-[#1C1B1B]">
             <input
               type={showPassword ? "text" : "password"}
               className=" h-full min-w-[120px] w-full outline-none "

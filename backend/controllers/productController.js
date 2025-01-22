@@ -118,7 +118,7 @@ const searchProducts = async (req, res) => {
 
     // Add name filter (case-insensitive search)
     if (name) {
-      filters.name = { $regex: name, $options: "i" };
+      filters.name = { $regex: name, $options: "i" }; // `i` makes it case-insensitive
     }
 
     // Add price range filter
