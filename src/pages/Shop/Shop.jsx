@@ -30,6 +30,7 @@ const necklaceData = {
 const Shop = () => {
   const { category } = useParams();
   const [allProducts, setAllProducts] = useState(null);
+  const [isPending, setIsPending] = useState(false);
   const [rings, setRings] = useState(null);
   let products = [],
     heading,
@@ -38,6 +39,7 @@ const Shop = () => {
   useEffect(() => {
     const getAllProducts = async () => {
       try {
+        setIsPending(true)
         const res = await apiClient.get({
           url: `/products/byCategory/${category}`,
         });
@@ -46,6 +48,8 @@ const Shop = () => {
         setRings(res2?.products);
       } catch (error) {
         console.log(error?.data?.message || "error");
+      }finally{
+        setIsPending(false)
       }
     };
     getAllProducts();
@@ -85,7 +89,7 @@ const Shop = () => {
           </div>
         </div> */}
         <div className="wrapper py-[2rem] grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 sm:gap-5">
-          {allProducts? allProducts.map((item) => {
+          {(allProducts &&!isPending )? allProducts.map((item) => {
             return (
               <div className="p-3 border">
                 <Link
