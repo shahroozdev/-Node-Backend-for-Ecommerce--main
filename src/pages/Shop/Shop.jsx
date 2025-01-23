@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
-import SortDropdown from "./components/SortDropdown";
-import { earringsItems, necklaceItems, ringsItems } from "../../constant";
+// import SortDropdown from "./components/SortDropdown";
+// import { earringsItems, necklaceItems, ringsItems } from "../../constant";
 import { Link, useParams } from "react-router-dom";
 import apiClient from "../../lib/utils";
 
@@ -10,21 +10,21 @@ const earringData = {
   heading: "Earrings & Earcuffs",
   subHeading:
     "Explore SOULSUN's luxury sculptural earring & earcuff collections - perfect for any wardrobe. From simple mini hoops, to statement must-haves, and in a stunning gold or silver plated finish.",
-  products: earringsItems,
+  // products: earringsItems,
 };
 
 const ringData = {
   heading: "Rings",
   subHeading:
     "Explore Soulsun stunning luxury collection of rings. From everyday sets to statement rings, and a beautiful gold or silver plated finish - shop your new jewellery favourites.",
-  products: ringsItems,
+  // products: ringsItems,
 };
 
 const necklaceData = {
   heading: "Necklaces",
   subHeading:
     "Discover SOULSUN's exquisite collection of luxury necklaces. From delicate chains to bold statement pieces, available in stunning gold or silver plated finishes – elevate your style with the perfect accessory.",
-  products: necklaceItems,
+  // products: necklaceItems,
 };
 
 const Shop = () => {
@@ -32,9 +32,7 @@ const Shop = () => {
   const [allProducts, setAllProducts] = useState(null);
   const [isPending, setIsPending] = useState(false);
   const [rings, setRings] = useState(null);
-  let products = [],
-    heading,
-    subHeading;
+  let heading, subHeading;
 
   useEffect(() => {
     const getAllProducts = async () => {
@@ -59,19 +57,19 @@ const Shop = () => {
   if (category === "earrings") {
     heading = earringData.heading;
     subHeading = earringData.subHeading;
-    products = earringData.products;
+    // products = earringData.products;
   } else if (category === "rings") {
     heading = ringData.heading;
     subHeading = ringData.subHeading;
-    products = ringData.products;
+    // products = ringData.products;
   } else {
     heading = necklaceData.heading;
     subHeading = necklaceData.subHeading;
-    products = necklaceData.products;
+    // products = necklaceData.products;
   }
 
-  const numOfPages = 5;
-  const [currentPage, setCurrentPage] = useState(1);
+  // const numOfPages = 5;
+  // const [currentPage, setCurrentPage] = useState(1);
 
   return (
     <div className="pt-[5.5rem]">
@@ -231,87 +229,87 @@ const Shop = () => {
 export default Shop;
 
 // pagination component
-const Pagination = ({ totalPages, currentPage, setCurrentPage }) => {
-  const handleClick = (page) => {
-    setCurrentPage(page);
-  };
+// const Pagination = ({ totalPages, currentPage, setCurrentPage }) => {
+//   const handleClick = (page) => {
+//     setCurrentPage(page);
+//   };
 
-  const renderPagination = () => {
-    const pages = [];
+//   const renderPagination = () => {
+//     const pages = [];
 
-    // Show the first page
-    pages.push(
-      <button
-        key={1}
-        className={`${
-          currentPage === 1 && "border-black"
-        } min-w-[4rem] border-b-2 pb-2`}
-        onClick={() => handleClick(1)}
-      >
-        1
-      </button>
-    );
+//     // Show the first page
+//     pages.push(
+//       <button
+//         key={1}
+//         className={`${
+//           currentPage === 1 && "border-black"
+//         } min-w-[4rem] border-b-2 pb-2`}
+//         onClick={() => handleClick(1)}
+//       >
+//         1
+//       </button>
+//     );
 
-    // Handle pages before and after the current page
-    if (currentPage > 3) {
-      pages.push(<span key="start-ellipsis">...</span>);
-    }
+//     // Handle pages before and after the current page
+//     if (currentPage > 3) {
+//       pages.push(<span key="start-ellipsis">...</span>);
+//     }
 
-    for (
-      let i = Math.max(2, currentPage - 1);
-      i <= Math.min(totalPages - 1, currentPage + 1);
-      i++
-    ) {
-      pages.push(
-        <button
-          key={i}
-          className={`${
-            currentPage === i && "border-black"
-          } min-w-[4rem] border-b-2 pb-2`}
-          onClick={() => handleClick(i)}
-        >
-          {i}
-        </button>
-      );
-    }
+//     for (
+//       let i = Math.max(2, currentPage - 1);
+//       i <= Math.min(totalPages - 1, currentPage + 1);
+//       i++
+//     ) {
+//       pages.push(
+//         <button
+//           key={i}
+//           className={`${
+//             currentPage === i && "border-black"
+//           } min-w-[4rem] border-b-2 pb-2`}
+//           onClick={() => handleClick(i)}
+//         >
+//           {i}
+//         </button>
+//       );
+//     }
 
-    if (currentPage < totalPages - 2) {
-      pages.push(<span key="end-ellipsis">...</span>);
-    }
+//     if (currentPage < totalPages - 2) {
+//       pages.push(<span key="end-ellipsis">...</span>);
+//     }
 
-    // Show the last page
-    pages.push(
-      <button
-        key={totalPages}
-        className={`${
-          currentPage === totalPages && "border-black"
-        } min-w-[4rem] border-b-2 pb-2`}
-        onClick={() => handleClick(totalPages)}
-      >
-        {totalPages}
-      </button>
-    );
+//     // Show the last page
+//     pages.push(
+//       <button
+//         key={totalPages}
+//         className={`${
+//           currentPage === totalPages && "border-black"
+//         } min-w-[4rem] border-b-2 pb-2`}
+//         onClick={() => handleClick(totalPages)}
+//       >
+//         {totalPages}
+//       </button>
+//     );
 
-    return pages;
-  };
+//     return pages;
+//   };
 
-  return (
-    <div className="flex">
-      <button
-        disabled={currentPage === 1}
-        onClick={() => handleClick(currentPage - 1)}
-      >
-        &lt;
-      </button>
+//   return (
+//     <div className="flex">
+//       <button
+//         disabled={currentPage === 1}
+//         onClick={() => handleClick(currentPage - 1)}
+//       >
+//         &lt;
+//       </button>
 
-      {renderPagination()}
+//       {renderPagination()}
 
-      <button
-        disabled={currentPage === totalPages}
-        onClick={() => handleClick(currentPage + 1)}
-      >
-        &gt;
-      </button>
-    </div>
-  );
-};
+//       <button
+//         disabled={currentPage === totalPages}
+//         onClick={() => handleClick(currentPage + 1)}
+//       >
+//         &gt;
+//       </button>
+//     </div>
+//   );
+// };

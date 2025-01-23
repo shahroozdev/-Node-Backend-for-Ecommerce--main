@@ -1,11 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import apiClient from "../../lib/utils";
+import { Eye, EyeOff } from "lucide-react";
 
 const AdminLogin = () => {
   const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword((prev) => !prev);
+  };
   const {
     register,
     handleSubmit,
@@ -20,9 +27,16 @@ const AdminLogin = () => {
     },
   });
 
-  const onSubmit = (data) => {
-    reset();
-    navigate("/");
+  const onSubmit = async (data) => {
+    try {
+      const res = await apiClient.post({ url: "/auth/login", data });
+      if (res?.token) {
+        navigate("/");
+        reset();
+      }
+    } catch (error) {
+      console.log(error?.data?.message || "error");
+    }
   };
   return (
     <>
@@ -50,8 +64,8 @@ const AdminLogin = () => {
           <small className="text-red-600">{errors.email?.message}</small>
           <div className="flex justify-between border w-full  px-4 py-3 mt-5 focus-within:border-[#1C1B1B]">
             <input
-              type="password"
-              className=" h-full min-w-[120px] sm:w-[235px] outline-none "
+              type={showPassword ? "text" : "password"}
+              className=" h-full min-w-[120px] w-full outline-none "
               placeholder="Password"
               maxLength={16}
               {...register("password", {
@@ -68,6 +82,13 @@ const AdminLogin = () => {
                   value.includes(" ") ? "Password cannot contain spaces" : true,
               })}
             />
+            <div onClick={togglePasswordVisibility} className="cursor-pointer text-[#686767]">
+              {showPassword ? <Eye color="#686767"/> : <EyeOff color="#686767"/>}
+            </div>
+            {/* <span className="min-w-[128px] text-[#6A6A6A]">
+              {" "}
+              Forgot Password?
+            </span> */}
           </div>
           <small className="text-red-600">{errors.password?.message}</small>
 
