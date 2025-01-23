@@ -15,6 +15,7 @@ import { Toaster } from "react-hot-toast";
 // Corrected import paths for Login and Signup components
 import Login from "./pages/Login/Login";
 import Signup from "./pages/Signup/Signup";
+import ProtectedRoute from "./components/protectedRoute";
 
 const Home = lazy(() => import("./pages/Home/Home"));
 const Shop = lazy(() => import("./pages/Shop/Shop"));
@@ -53,14 +54,7 @@ function App() {
           />
           <Routes>
             {/* Home */}
-            <Route
-              path="/"
-              element={
-                <>
-                  <Home />
-                </>
-              }
-            />
+            <Route  path="/"  element={<Home />}/>
 
             {/* Products listing */}
             <Route path="/shop/*" element={<Navigate to="/shop/necklace" />} />
@@ -95,7 +89,7 @@ function App() {
             {/* Admin */}
             <Route path="/admin/login" element={<AdminLogin />} />
 
-            <Route path="/" element={<ProfileLayout />}>
+            <Route path="/" element={<ProtectedRoute><ProfileLayout /></ProtectedRoute>}>
               <Route path="profile" element={<UserProfile />} />
               <Route path="address" element={<Address />} />
               <Route path="orders" element={<OrderHistory />} />
