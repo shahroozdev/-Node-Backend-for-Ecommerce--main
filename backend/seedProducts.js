@@ -1,7 +1,8 @@
 // seedProducts.js
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
-const Product = require("/models/Product");
+const Product = require("./models/product");
+const Category = require("./models/category");
 
 dotenv.config();
 
@@ -34,13 +35,35 @@ const products = [
     keywords: ["earrings", "gold-plated", "crystals", "glamour"],
   },
 ];
-
+exports.products = products;
+const categories = [
+  { name: "earrings" },
+  { name: "necklaces" },
+  { name: "rings" },
+];
+exports.categories = categories;
 mongoose
   .connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(async () => {
     console.log("Connected to MongoDB. Seeding products...");
     await Product.deleteMany(); // Clear old data
-    await Product.insertMany(products);
+    await Category.deleteMany(); // Clear old data
+    // Insert categories
+    const insertedCategories = await Category.insertMany(categories);
+    console.log("Categories seeded successfully.");
+
+    // Map category names to ObjectIds
+    const categoryMap = {};
+    insertedCategories.forEach((cat) => {
+      categoryMap[cat.name] = cat._id;
+    });
+
+    // Replace category names in products with ObjectIds
+    const updatedProducts = products.map((product) => ({
+      ...product,
+      category: categoryMap[product.category]
+    }));
+    await Product.insertMany(updatedProducts);
     console.log("Products seeded successfully.");
     process.exit();
   })

@@ -41,11 +41,19 @@ html {
   .primary-btn {
     @apply text-black shadow-large shadow-transparent hover:shadow-primary/30 border-x border-y-2 border-primary bg-gradient-to-b from-[#fff7e6] to-[#956520] hover:from-[#e5cdab] hover:to-[#956520];
   }
+  .btn1 {
+    @apply px-3 text-sm py-2 min-w-[5rem] rounded-md flex justify-center items-center gap-2 transition-all  duration-200;
+  }
 }
+
+/* .table_container::-webkit-scrollbar {
+  height: 4px;
+  overflow-y: scroll;
+} */
 
 ::-webkit-scrollbar {
   scroll-behavior: smooth;
-  width: 6px;
+  width: 4px;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -94,7 +102,7 @@ html {
   animation: 1s spin linear infinite;
 }
 .loader:after {
-  color: #CBA85C;
+  color: #cba85c;
   transform: rotateY(70deg);
   animation-delay: 0.4s;
 }

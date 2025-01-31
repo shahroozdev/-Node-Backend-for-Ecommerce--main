@@ -33,6 +33,18 @@ const Address = lazy(() => import("./pages/User/Address/Address"));
 const OrderHistory = lazy(() => import("./pages/User/OrderHistory/OrderHistory"));
 const Support = lazy(() => import("./pages/User/Support/Support"));
 
+// Admin panel
+const AdminPanelLayout = lazy(() =>
+  import("./components/admin/AdminPanelLayout")
+);
+const Dashboard = lazy(() => import("./pages/AdminPanel/Dashboard/Dashboard"));
+const ProductsPage = lazy(() =>
+  import("./pages/AdminPanel/ProductsPage/ProductsPage")
+);
+const Orders = lazy(() => import("./pages/AdminPanel/Orders/Orders"));
+const Coupons = lazy(() => import("./pages/AdminPanel/Coupons/Coupons"));
+const Reports = lazy(() => import("./pages/AdminPanel/Reports/Reports"));
+
 AOS.init({
   once: true,
   duration: 500,
@@ -95,6 +107,15 @@ function App() {
               <Route path="orders" element={<OrderHistory />} />
               <Route path="wishlist" element={<Wishlist />} />
               <Route path="support" element={<Support />} />
+            </Route>
+            <Route path="/admin/login" element={<AdminLogin />} />
+            <Route path="/admin" element={<AdminPanelLayout />}>
+              <Route path="*" element={<Navigate to="/admin" />} />
+              <Route path="" exact element={<Dashboard />} />
+              <Route path="products" exact element={<ProductsPage />} />
+              <Route path="orders" exact element={<Orders />} />
+              <Route path="coupons" exact element={<Coupons />} />
+              <Route path="reports" exact element={<Reports />} />
             </Route>
           </Routes>
         </Router>

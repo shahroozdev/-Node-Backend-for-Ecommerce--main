@@ -87,3 +87,56 @@ class APIClient {
 }
 const apiClient = new APIClient();
 export default apiClient;
+
+
+export const generateLabels = (range) => {
+  const currentDate = new Date();
+  const currentMonth = currentDate.getMonth(); // Get current month (0 = Jan, 1 = Feb, ..., 11 = Dec)
+  const currentDay = currentDate.getDate(); // Get current day (used for 7d range)
+
+  let labels = [];
+
+  if (range === "12") {
+    // For 12 months, generate the last 12 months in reverse order
+    for (let i = 0; i < 12; i++) {
+      const month = new Date(currentDate);
+      month.setMonth(currentMonth - i);
+      const monthName = month.toLocaleString("default", { month: "short" });
+      labels.push(monthName);
+    }
+  } else if (range === "6") {
+    // For 6 months, generate the last 6 months
+    for (let i = 0; i < 6; i++) {
+      const month = new Date(currentDate);
+      month.setMonth(currentMonth - i);
+      const monthName = month.toLocaleString("default", { month: "short" });
+      labels.push(monthName);
+    }
+  } else if (range === "3") {
+    // For 3 months, generate the last 3 months
+    for (let i = 0; i < 3; i++) {
+      const month = new Date(currentDate);
+      month.setMonth(currentMonth - i);
+      const monthName = month.toLocaleString("default", { month: "short" });
+      labels.push(monthName);
+    }
+  } else if (range === "7d") {
+    // For 7 days, generate the names of the last 7 days
+    for (let i = 0; i < 7; i++) {
+      const day = new Date(currentDate);
+      day.setDate(currentDay - i);
+      const dayName = day.toLocaleString("default", { weekday: "short" });
+      labels.push(dayName);
+    }
+  } else if (range === "30d") {
+    // For 7 days, generate the names of the last 30 days
+    for (let i = 0; i < 30; i++) {
+      const day = new Date(currentDate);
+      day.setDate(currentDay - i);
+      const dayName = day.toLocaleString("default", { weekday: "short" });
+      labels.push(dayName);
+    }
+  }
+
+  return labels.reverse(); // For months, we need to reverse to have the correct order from past to present
+};

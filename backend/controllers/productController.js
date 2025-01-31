@@ -1,17 +1,46 @@
 // controllers/productController.js
 
+const Category = require("../models/category");
 const Product = require("../models/product");
+const multer = require('multer');
+const path = require('path');
 
+// Configure multer to store files in the 'public/images' folder
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'public/images'); // Destination folder
+  },
+  filename: (req, file, cb) => {
+    const uniqueName = `${Date.now()}-${file.originalname}`;
+    cb(null, uniqueName); // Using timestamp and original filename for unique name
+  }
+});
+
+const upload = multer({ storage });
 // Function to add a new product
 const addProduct = async (req, res) => {
-  const { name, price, description, category, image, isBestSeller } = req.body;
+  const { name, price, description, Category:categoryName, isBestSeller=false} = req.body;
+  const categoryFound = await Category.findOne({ name: categoryName });
+      // Ensure a file is uploaded
+ 
+    // Ensure that images are uploaded
+    if (!req.files || req.files.length !== 2) {
+      return res.status(400).json({ message: "Two image files are required" });
+    }   
+  // Check if category was found
+  if (!categoryFound) {
+    return res.status(404).json({ message: "Category not found" });
+  }
+    // Prepare the image paths (relative to public folder)
+    const imagePaths = req.files.map(file => `/public/images/${file.filename}`);
+
   try {
     const newProduct = new Product({
       name,
       price,
       description,
-      category,
-      image,
+      Category:categoryFound._id,
+      images:imagePaths,
       isBestSeller,
     });
     await newProduct.save();
@@ -20,11 +49,64 @@ const addProduct = async (req, res) => {
     res.status(500).json({ message: "Error adding product", error });
   }
 };
+const updateProduct = async (req, res) => {
+  const { name, price, description, Category: categoryName, isBestSeller = false } = req.body;
+  const categoryFound = await Category.findOne({ name: categoryName });
+
+  if (!categoryFound) {
+    return res.status(404).json({ message: "Category not found" });
+  }
+
+  try {
+    const product = await Product.findById(req.params.id);
+
+    // Extract existing images from the product
+    const existingImages = product.images || [];
+
+    // Update images if new files are uploaded (if files exist, replace the corresponding images)
+    const updatedImages = [...existingImages];
+
+    if (req.files) {
+      req.files.forEach((file, index) => {
+        // Replace the first image if the user has uploaded a new one for img1
+        if (index === 0 && updatedImages.length > 0) {
+          updatedImages[0] = file.path;  // Replace the first image
+        }
+        // Replace the second image if the user has uploaded a new one for img2
+        if (index === 1 && updatedImages.length > 1) {
+          updatedImages[1] = file.path;  // Replace the second image
+        }
+      });
+    }
+
+    // Update product with new or retained images
+    const updatedProduct = await Product.findByIdAndUpdate(
+      req.params.id,
+      {
+        name,
+        price,
+        description,
+        Category: categoryFound._id,
+        isBestSeller,
+        images: updatedImages,
+      },
+      { new: true }
+    );
+
+    res.status(200).json({updatedProduct, message: "Product updated successfully"});
+  } catch (error) {
+    res.status(500).json({ message: "Error updating product", error });
+  }
+};
 
 // Function to get all products
 const getAllProducts = async (req, res) => {
   try {
-    const products = await Product.find();
+    const products = await Product.find({status:true})
+    .populate('Category', 'name')  // This should work if the 'Category' model is correct
+    .exec();  // Use .exec() to explicitly return a promise
+    Category.find({}, 'name')  // Find all categories and return only the 'name' field
+  .catch(error => console.log(error));
     res.status(200).json({ products });
   } catch (error) {
     res.status(500).json({ message: "Error fetching products", error });
@@ -33,9 +115,15 @@ const getAllProducts = async (req, res) => {
 const getProductsByCategory = async (req, res) => {
   try {
     const { category } = req.params; // Extract category from route parameters
-
+       // Find the category by name
+       const categoryFound = await Category.findOne({ name: category });
+    
+       // Check if category was found
+       if (!categoryFound) {
+         return res.status(404).json({ message: "Category not found" });
+       }
     // Query products based on category
-    const products = await Product.find({ category });
+    const products = await Product.find({Category: categoryFound._id , status:true});
 
     if (!products.length) {
       return res.status(404).json({ message: "No products found in this category" });
@@ -46,7 +134,26 @@ const getProductsByCategory = async (req, res) => {
     res.status(500).json({ message: "Error fetching products", error });
   }
 };
+const changeProductStatus=async(req, res)=>{
+  const {id} = req.body
+  try {
+     // Find the product by ID
+     const product = await Product.findById(id);
 
+     if (!product) {
+       return res.status(404).json({ message: "Product not found" });
+     }
+ 
+     // Toggle status (if true, make false; if false, make true)
+     product.status = !product.status;
+     
+     // Save the updated product
+     await product.save();
+    res.status(200).json({ message: "Product status updated", product });
+  } catch (error) {
+    res.status(500).json({ message: "Error on updating products", error });
+  }
+}
 // Function to get a product by ID
 const getProductById = async (req, res) => {
   const { id } = req.params;
@@ -63,23 +170,23 @@ const getProductById = async (req, res) => {
 };
 
 // Function to update a product
-const updateProduct = async (req, res) => {
-  const { id } = req.params;
-  const { name, price, description, category, image, isBestSeller } = req.body;
-  try {
-    const updatedProduct = await Product.findByIdAndUpdate(
-      id,
-      { name, price, description, category, image, isBestSeller },
-      { new: true }
-    );
-    if (!updatedProduct) {
-      return res.status(404).json({ message: "Product not found" });
-    }
-    res.status(200).json({ message: "Product updated successfully", product: updatedProduct });
-  } catch (error) {
-    res.status(500).json({ message: "Error updating product", error });
-  }
-};
+// const updateProduct = async (req, res) => {
+//   const { id } = req.params;
+//   const { name, price, description, category, image, isBestSeller } = req.body;
+//   try {
+//     const updatedProduct = await Product.findByIdAndUpdate(
+//       id,
+//       { name, price, description, category, image, isBestSeller },
+//       { new: true }
+//     );
+//     if (!updatedProduct) {
+//       return res.status(404).json({ message: "Product not found" });
+//     }
+//     res.status(200).json({ message: "Product updated successfully", product: updatedProduct });
+//   } catch (error) {
+//     res.status(500).json({ message: "Error updating product", error });
+//   }
+// };
 
 // Function to delete a product
 const deleteProduct = async (req, res) => {
@@ -158,4 +265,4 @@ const searchProducts = async (req, res) => {
 };
 
 
-module.exports = { addProduct, getAllProducts, getProductById, updateProduct, deleteProduct, searchProducts, getProductsByCategory};
+module.exports = { addProduct, getAllProducts, getProductById, updateProduct, deleteProduct, searchProducts, getProductsByCategory, changeProductStatus, upload};

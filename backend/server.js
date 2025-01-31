@@ -14,6 +14,7 @@ const coupanRoutes = require("./routes/coupon");
 const profileRoutes = require("./routes/profile");
 
 const wishlistRoutes = require("./routes/wishlist");
+const categoriesRoutes = require("./routes/category");
 
 dotenv.config();
 const app = express();
@@ -39,6 +40,7 @@ app.use("/api/shipping", shippingRoutes);
 app.use("/api/coupan", coupanRoutes);
 app.use("/api/wishlist", wishlistRoutes);
 app.use("/api/profile", profileRoutes);
+app.use("/api/category", categoriesRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
