@@ -72,7 +72,7 @@ const getShippingByUserId = async (req, res) => {
 const getAllOrdersList = async (req, res) => {
   try {
     // Fetch all shipping orders from the Shipping model
-    const list = await Shipping.find();
+    const list = await Shipping.find().populate('user').exec();
 
     // Send a response with the list of orders
     res.status(200).json({

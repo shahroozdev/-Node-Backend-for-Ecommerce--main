@@ -1,10 +1,27 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import OrdersTable from "./components/OrdersTable";
 import { ArrowLeft, ArrowRight, Search } from "lucide-react";
 import Dropdown from "./components/Dropdown";
+import apiClient from "../../../lib/utils";
 
 const Orders = () => {
   const [sortBy, setSortBy] = React.useState("Date");
+  const [allOrders, setAllOrders] =useState()
+
+  const getAllCategories = async () => {
+    try {
+      const res = await apiClient.get({ url: `/shipping/getAll`,});
+      console.log(res)
+      setAllOrders(res?.data)
+    } catch (error) {
+      console.log(error?.data?.message || "error");
+    }
+  };
+
+  useEffect(() => {
+    getAllCategories();
+  }, []);
+
   return (
     <div className="w-full relative">
       <div className="pb-[3rem] sm:py-[2rem] sm:px-4">
@@ -37,7 +54,7 @@ const Orders = () => {
         </div>
 
         <div className="pt-5 px-4 sm:px-0">
-          <OrdersTable />
+          <OrdersTable allorders={allOrders}/>
         </div>
         <div className="px-4 flex justify-between gap-4 mt-5">
           <button className="btn1 w-[7rem] bg-white border border-gray-300 hover:bg-gray-200 h-fit">

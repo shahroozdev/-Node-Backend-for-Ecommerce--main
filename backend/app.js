@@ -10,6 +10,7 @@ const shippingRoutes = require("./routes/shipping");
 const coupanRoutes = require("./routes/coupon");
 const wishlistRoutes = require("./routes/wishlist");
 const profileRoutes = require("./routes/profile");
+const categoriesRoutes = require("./routes/category");
 
 dotenv.config();
 const app = express();
@@ -43,6 +44,7 @@ app.use("/api/shipping", shippingRoutes);
 app.use("/api/coupan", coupanRoutes);
 app.use("/api/wishlist", wishlistRoutes);
 app.use("/api/profile", profileRoutes);
+app.use("/api/category", categoriesRoutes);
 
 // Export the app as a serverless function
 module.exports = app;

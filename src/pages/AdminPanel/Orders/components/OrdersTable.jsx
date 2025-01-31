@@ -1,6 +1,7 @@
+import dayjs from "dayjs";
 import React from "react";
 
-const OrdersTable = () => {
+const OrdersTable = ({allorders}) => {
   const orders = [
     {
       id: "11658",
@@ -44,6 +45,7 @@ const OrdersTable = () => {
     },
   ];
 
+console.log(allorders)
   return (
     <div className="w-full sm:pt-[6rem]">
       {/* Desktop and Tablet View */}
@@ -81,8 +83,8 @@ const OrdersTable = () => {
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
-            {orders.map((order) => (
-              <tr key={order.id} className="hover:bg-gray-50">
+            {allorders?.map((order) => (
+              <tr key={order._id} className="hover:bg-gray-50">
                 {/* <td className="p-4">
                   <input
                     type="checkbox"
@@ -90,24 +92,24 @@ const OrdersTable = () => {
                   />
                 </td> */}
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  Order# {order.id}
+                  Order# {order?._id}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  ${order.price.toFixed(2)}
+                  ${order?.totalPrice?.toFixed(2)}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  ${order.total.toFixed(2)}
+                  ${order?.totalPrice?.toFixed(2)}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                    {order.status}
+                  {order?.isDelivered?'Delivered':'Pending'}
                   </span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  {order.customer}
+                  {order?.user?.name}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  {order.date}
+                  {dayjs(order?.createdAt).format('DD-MM-YYYY')}
                 </td>
                 {/* <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   <div className="flex space-x-2">
@@ -127,7 +129,7 @@ const OrdersTable = () => {
 
       {/* Mobile View */}
       <div className="md:hidden space-y-4">
-        {orders.map((order) => (
+        {allorders?.map((order) => (
           <div key={order.id} className="bg-white rounded-lg shadow p-4">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center space-x-3">
@@ -136,7 +138,7 @@ const OrdersTable = () => {
                   className="w-4 h-4 rounded border-gray-300 accent-blue-400"
                 />
                 <span className="font-medium text-gray-900">
-                  Order# {order.id}
+                  Order# {order?._id}
                 </span>
               </div>
               {/* <div className="flex space-x-2">
@@ -153,26 +155,26 @@ const OrdersTable = () => {
               <div className="grid grid-cols-2 gap-2">
                 <div className="text-sm text-gray-500">Price:</div>
                 <div className="text-sm text-gray-900">
-                  ${order.price.toFixed(2)}
+                  ${order?.totalPrice?.toFixed(2)}
                 </div>
 
                 <div className="text-sm text-gray-500">Order Total:</div>
                 <div className="text-sm text-gray-900">
-                  ${order.total.toFixed(2)}
+                  ${order?.totalPrice?.toFixed(2)}
                 </div>
 
                 <div className="text-sm text-gray-500">Status:</div>
                 <div>
                   <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                    {order.status}
+                    {order?.isDelivered?'Delivered':'Pending'}
                   </span>
                 </div>
 
                 <div className="text-sm text-gray-500">Customer:</div>
-                <div className="text-sm text-gray-900">{order.customer}</div>
+                <div className="text-sm text-gray-900">{order?.user?.name}</div>
 
                 <div className="text-sm text-gray-500">Date:</div>
-                <div className="text-sm text-gray-900">{order.date}</div>
+                <div className="text-sm text-gray-900">{dayjs(order?.createdAt).format('DD-MM-YYYY')}</div>
               </div>
             </div>
           </div>
