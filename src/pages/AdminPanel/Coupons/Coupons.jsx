@@ -1,10 +1,42 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Plus, Search } from "lucide-react";
 import CouponsTable from "./components/CouponsTable";
 import AddCouponForm from "./components/AddCouponForm";
+import apiClient from "../../../lib/utils";
 
 const Coupons = () => {
   const [showAddCouponForm, setShowAddCouponForm] = React.useState(false);
+
+  const [allCoupans, setAllCoupans] = useState();
+  const [filterCoupans, setFilterCoupans] = useState();
+  const [defaultValues, setDefaultValues] = useState(null);
+
+  const getAllCoupans = async () => {
+    try {
+      const res = await apiClient.get({ url: `/coupan` });
+      setAllCoupans(res);
+      setFilterCoupans(res);
+    } catch (error) {
+      console.log(error?.data?.message || "error");
+    }
+  };
+
+  useEffect(() => {
+    getAllCoupans();
+  }, []);
+
+  const handleSearch = (e) => {
+    const searchTerm = e.target.value.toLowerCase(); // Convert search input to lowercase
+    setFilterCoupans(
+      allCoupans?.filter(
+        (item) => item?.code?.toLowerCase().includes(searchTerm) // Convert coupon code to lowercase for comparison
+      )
+    );
+  };
+  const handleEdit = (values) => {
+    setDefaultValues(values);
+    setShowAddCouponForm(true);
+  };
   return (
     <div className="w-full relative">
       <div className="pb-[3rem] sm:py-[2rem] sm:px-4">
@@ -30,6 +62,7 @@ const Coupons = () => {
                   type="text"
                   placeholder="Search Coupon"
                   className="outline-none w-full border-none"
+                  onChange={(e) => handleSearch(e)}
                 />
               </div>
             </div>
@@ -37,7 +70,19 @@ const Coupons = () => {
         </div>
 
         <div className="pt-5 px-4 sm:px-0">
-          {showAddCouponForm ? <AddCouponForm onClose={() => setShowAddCouponForm(false)} /> : <CouponsTable />}
+          {showAddCouponForm ? (
+            <AddCouponForm
+              onClose={() => {setShowAddCouponForm(false);setDefaultValues(null)}}
+              getAllCoupans={getAllCoupans}
+              defaultValues={defaultValues}
+            />
+          ) : (
+            <CouponsTable
+              filterCoupans={filterCoupans}
+              getAllCoupans={getAllCoupans}
+              handleEdit={handleEdit}
+            />
+          )}
         </div>
       </div>
     </div>

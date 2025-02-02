@@ -1,51 +1,30 @@
 import dayjs from "dayjs";
-import React from "react";
+import { PenLine } from "lucide-react";
+import React, { useState } from "react";
+import Modal from "../../../../components/Modal";
+import apiClient from "../../../../lib/utils";
 
-const OrdersTable = ({allorders}) => {
-  const orders = [
-    {
-      id: "11658",
-      price: 526.0,
-      total: 526.0,
-      status: "Active",
-      customer: "Guest",
-      date: "25 July, 2024",
-    },
-    {
-      id: "11657",
-      price: 238.0,
-      total: 238.0,
-      status: "Active",
-      customer: "Guest",
-      date: "25 July, 2024",
-    },
-    {
-      id: "11656",
-      price: 209.0,
-      total: 209.0,
-      status: "Active",
-      customer: "Guest",
-      date: "25 July, 2024",
-    },
-    {
-      id: "11655",
-      price: 920.0,
-      total: 920.0,
-      status: "Active",
-      customer: "Guest",
-      date: "25 July, 2024",
-    },
-    {
-      id: "11654",
-      price: 1040.0,
-      total: 1040.0,
-      status: "Active",
-      customer: "Guest",
-      date: "25 July, 2024",
-    },
-  ];
+const OrdersTable = ({ allorders , getAllCategories}) => {
+    const [isOpen, setIsOpen]= useState(false)
+    const [order, setOrder]= useState({})
+    
+  const updateStatus = async (value) => {
 
-console.log(allorders)
+    try {
+        const res = await apiClient.post({
+          url: `/shipping/status`,
+          data:{id:order.id, status:Boolean(order.status)}
+        });
+      console.log(res);
+      if (res.message.includes("successfully")) {
+        setOrder({})
+        setIsOpen(false)
+        getAllCategories();
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
+  };
   return (
     <div className="w-full sm:pt-[6rem]">
       {/* Desktop and Tablet View */}
@@ -77,9 +56,9 @@ console.log(allorders)
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Date
               </th>
-              {/* <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Actions
-              </th> */}
+              </th>
             </tr>
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
@@ -101,26 +80,26 @@ console.log(allorders)
                   ${order?.totalPrice?.toFixed(2)}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
-                  <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                  {order?.isDelivered?'Delivered':'Pending'}
+                  <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full  ${order?.isDelivered ? 'text-green-800 bg-green-100':'text-white bg-yellow-600'}`}>
+                    {order?.isDelivered ? "Delivered" : "Pending"}
                   </span>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                   {order?.user?.name}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  {dayjs(order?.createdAt).format('DD-MM-YYYY')}
+                  {dayjs(order?.createdAt).format("DD-MM-YYYY")}
                 </td>
-                {/* <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   <div className="flex space-x-2">
-                    <button className="text-gray-400 hover:text-gray-500">
+                    {/* <button className="text-gray-400 hover:text-gray-500">
                       <Trash2 className="w-5 h-5" />
-                    </button>
-                    <button className="text-gray-400 hover:text-gray-500">
+                    </button> */}
+                    <button className="text-gray-400 hover:text-gray-500" onClick={()=>{setIsOpen(true); setOrder({id:order?._id, status:order?.isDelivered})}}>
                       <PenLine className="w-5 h-5" />
                     </button>
                   </div>
-                </td> */}
+                </td>
               </tr>
             ))}
           </tbody>
@@ -133,22 +112,22 @@ console.log(allorders)
           <div key={order.id} className="bg-white rounded-lg shadow p-4">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center space-x-3">
-                <input
+                {/* <input
                   type="checkbox"
                   className="w-4 h-4 rounded border-gray-300 accent-blue-400"
-                />
+                /> */}
                 <span className="font-medium text-gray-900">
                   Order# {order?._id}
                 </span>
               </div>
-              {/* <div className="flex space-x-2">
-                <button className="text-gray-400 hover:text-gray-500">
+              <div className="flex space-x-2">
+                {/* <button className="text-gray-400 hover:text-gray-500">
                   <Trash2 className="w-5 h-5" />
-                </button>
-                <button className="text-gray-400 hover:text-gray-500">
+                </button> */}
+                <button className="text-gray-400 hover:text-gray-500" onClick={()=>{setIsOpen(true); setOrder({id:order?._id, status:order?.isDelivered})}}>
                   <PenLine className="w-5 h-5" />
                 </button>
-              </div> */}
+              </div>
             </div>
 
             <div className="space-y-2">
@@ -166,7 +145,7 @@ console.log(allorders)
                 <div className="text-sm text-gray-500">Status:</div>
                 <div>
                   <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                    {order?.isDelivered?'Delivered':'Pending'}
+                    {order?.isDelivered ? "Delivered" : "Pending"}
                   </span>
                 </div>
 
@@ -174,12 +153,31 @@ console.log(allorders)
                 <div className="text-sm text-gray-900">{order?.user?.name}</div>
 
                 <div className="text-sm text-gray-500">Date:</div>
-                <div className="text-sm text-gray-900">{dayjs(order?.createdAt).format('DD-MM-YYYY')}</div>
+                <div className="text-sm text-gray-900">
+                  {dayjs(order?.createdAt).format("DD-MM-YYYY")}
+                </div>
               </div>
             </div>
           </div>
         ))}
       </div>
+      <Modal isOpen={isOpen} onClose={()=>setIsOpen(false)} title="Update Order Status">
+      <div className="flex flex-col p-5">
+        <label className="text-sm">Status</label>
+        <select
+          name="discountType"
+          value={order.status}
+          onChange={(e)=>setOrder(pre=>({...pre, status:e.target.value}))}
+          className="p-2 bg-gray-100 rounded outline-none border"
+        >
+          <option value={true}>Delivered</option>
+          <option value={false}>Pending</option>
+        </select>
+        <button className="w-max justify-end bg-primary text-white p-2 rounded-md mt-2" onClick={updateStatus}>
+          Update
+        </button>
+      </div>
+      </Modal>
     </div>
   );
 };

@@ -1,28 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut, Pie } from "react-chartjs-2";
+import apiClient from "../../../lib/utils";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-const soldItemsData = {
-  labels: ["In Progress", "Delivered", "Pending"],
-  datasets: [
-    {
-      data: [12, 19, 3],
-      backgroundColor: [
-        "rgba(255, 99, 132)",
-        "rgba(54, 162, 235)",
-        "rgba(153, 102, 255)",
-      ],
-      borderColor: [
-        "rgba(255, 99, 132, 1)",
-        "rgba(54, 162, 235, 1)",
-        "rgba(153, 102, 255, 1)",
-      ],
-      borderWidth: 1,
-    },
-  ],
-};
+
 
 const averageGrossSales = {
   labels: ["Product 1", "Product 2", "Product 3"],
@@ -45,6 +28,42 @@ const averageGrossSales = {
 };
 
 const Reports = () => {
+
+  const [allOrders, setAllOrders] =useState()
+
+  const getAllCategories = async () => {
+    try {
+      const res = await apiClient.get({ url: `/shipping/getStats`,});
+      console.log(res)
+      setAllOrders(res)
+    } catch (error) {
+      console.log(error?.data?.message || "error");
+    }
+  };
+
+  useEffect(() => {
+    getAllCategories();
+  }, []);
+  const soldItemsData = {
+    labels: ["Delivered", "Pending"],
+    datasets: [
+      {
+        data: [allOrders?.deliveredOrders||0, (allOrders?.deliveredOrders||0)-(allOrders?.totalOrders||0)],
+        backgroundColor: [
+          "rgba(255, 99, 132)",
+          "rgba(54, 162, 235)",
+          "rgba(153, 102, 255)",
+        ],
+        borderColor: [
+          "rgba(255, 99, 132, 1)",
+          "rgba(54, 162, 235, 1)",
+          "rgba(153, 102, 255, 1)",
+        ],
+        borderWidth: 1,
+      },
+    ],
+  };
+  console.log(allOrders)
   return (
     <div className="w-full relative">
       <div className="pb-[3rem] sm:py-[2rem] sm:px-4">
@@ -58,21 +77,21 @@ const Reports = () => {
         <div className="sm:pt-[4rem] px-4 sm:px-0 max-w-4xl">
           <section className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {[
+              // {
+              //   label: "gross sales in this period",
+              //   value: "$10,562.00",
+              // },
               {
-                label: "gross sales in this period",
-                value: "$10,562.00",
-              },
-              {
-                label: "net sales in this period",
-                value: "$8,230",
+                label: "Sales in this period",
+                value: "₹"+allOrders?.totalSales||0,
               },
               {
                 label: "orders placed",
-                value: "236",
+                value: allOrders?.totalOrders||0,
               },
               {
                 label: "items purchased",
-                value: "53",
+                value: allOrders?.totalPurchasedItems||0,
               },
             ].map((item) => (
               <div
@@ -90,7 +109,7 @@ const Reports = () => {
             <div className="rounded-lg shadow-lg border space-y-4 md:w-fit lg:w-full">
               <div className="space-y-2 border-b-2 p-4">
                 <p className="text-gray-400 uppercase">Total Orders</p>
-                <h3 className="text-3xl font-semibold">248</h3>
+                <h3 className="text-3xl font-semibold">{allOrders?.totalOrders||0}</h3>
               </div>
               <div className="py-4 sm:p-4 max-h-[60vh]">
                 <Pie data={soldItemsData} />
@@ -101,7 +120,7 @@ const Reports = () => {
                 <p className="text-gray-400 uppercase">
                   Average gross sales amount
                 </p>
-                <h3 className="text-3xl font-semibold">1,02,293</h3>
+                <h3 className="text-3xl font-semibold">{"₹"+allOrders?.totalSales||0}</h3>
               </div>
               <div className="py-4 sm:p-4 max-h-[60vh]">
                 <Doughnut data={averageGrossSales} />

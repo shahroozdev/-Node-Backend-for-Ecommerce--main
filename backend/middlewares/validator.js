@@ -33,5 +33,52 @@ const profileSchema = z.object({
       .array(productSchema)
       .min(1, "At least one product is required."),
   });
+  const shippingStatusSchema = z.object({
+    id:z.string().nonempty("Product ID is required."),
+    status: z.boolean().refine(val => typeof val === 'boolean', "Status must be a boolean.")
+  })
 
-  module.exports ={profileSchema, shippingSchema}
+  const createCouponSchema = z.object({
+    code: z
+      .string()
+      .min(3, "Coupon code must be at least 3 characters long")
+      .max(20, "Coupon code must be at most 20 characters")
+      .trim(),
+  
+    description: z
+      .string()
+      .optional(), // Description is optional
+  
+    discountType: z.enum(["percentage", "fixed"], {
+      errorMap: () => ({ message: "Discount type must be either 'percentage' or 'fixed'" }),
+    }),
+  
+    // Adding discountValue validation only if discountType is "fixed"
+    discountValue: z
+      .number()
+      .min(1, "Discount value must be greater than 0"),
+  
+    usageLimit: z
+      .number()
+      .positive("Usage Limit must be a positive number")
+      .default(1),
+  
+    usageLimitPerUser: z
+      .number()
+      .positive("Usage Limit Per User must be a positive number")
+      .default(1),
+  
+    minimumAmount: z
+      .number()
+      .min(0, "Minimum order amount should be at least 0"),
+  
+    expiryDate: z
+      .string()
+      .refine(date => !isNaN(Date.parse(date)), { message: "Invalid expiry date format" }),
+  
+  }).refine(data => new Date(data.expiryDate) > new Date(), {
+    message: "Expiry date must be in the future",
+    path: ["expiryDate"],
+  });
+  
+  module.exports ={profileSchema, shippingSchema, createCouponSchema, shippingStatusSchema}

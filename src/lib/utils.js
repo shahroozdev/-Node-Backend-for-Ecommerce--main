@@ -45,8 +45,12 @@ axiosInstance.interceptors.response.use(
       localStorage.removeItem("user");
       toast.error("Session is expired you need to log in again.");
 
-      // Redirect to the login page
-      window.location.href = "/login";
+      // Check if the URL includes 'admin' and redirect accordingly
+      if (response?.config?.url?.includes("admin")) {
+        window.location.href = "/admin/login";
+      } else {
+        window.location.href = "/login";
+      }
     } else {
       toast.error(errMsg);
     }
@@ -87,7 +91,6 @@ class APIClient {
 }
 const apiClient = new APIClient();
 export default apiClient;
-
 
 export const generateLabels = (range) => {
   const currentDate = new Date();

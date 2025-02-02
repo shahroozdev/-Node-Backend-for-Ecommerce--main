@@ -1,46 +1,22 @@
+import dayjs from "dayjs";
 import { PenLine, Trash2 } from "lucide-react";
 import React from "react";
+import apiClient from "../../../../lib/utils";
 
-const CouponsTable = () => {
-  const coupons = [
-    {
-      code: "ABC123",
-      couponType: "Percentage discount",
-      couponAmount: 13.0,
-      productIds: ["23435223432", "234234235235546", "345346343545345"],
-      usageLimits: 200,
-      status: "Active",
-      customer: "Guest",
-      expiryDate: "25 July, 2026",
-    },
-    {
-      code: "NEW",
-      couponType: "Percentage discount",
-      couponAmount: 5.0,
-      productIds: [
-        "23435223432",
-        "234234235235546",
-        "234234235235546",
-        "234234235235546",
-        "345346343545345",
-      ],
-      usageLimits: 200,
-      status: "Active",
-      customer: "Guest",
-      expiryDate: "25 July, 2026",
-    },
-    {
-      code: "FREE10",
-      couponType: "Percentage discount",
-      couponAmount: 10.0,
-      productIds: ["23435223432", "234234235235546", "345346343545345"],
-      usageLimits: 200,
-      status: "Active",
-      customer: "Guest",
-      expiryDate: "25 July, 2026",
-    },
-  ];
-
+const CouponsTable = ({filterCoupans, getAllCoupans, handleEdit}) => {
+  const handleDelete = async (id) => {
+    try {
+       const res=await apiClient.delete({
+        url: "/coupan",
+        data: {id},
+      });
+      if (res.message==="Coupon is deleted.") {
+        getAllCoupans();
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
+  };
   return (
     <div className="w-full sm:pt-[7.5rem]">
       {/* Desktop and Tablet View */}
@@ -57,9 +33,9 @@ const CouponsTable = () => {
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Coupon Amount
               </th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              {/* <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Product IDs
-              </th>
+              </th> */}
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 Usage Limits
               </th>
@@ -71,8 +47,17 @@ const CouponsTable = () => {
               </th>
             </tr>
           </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            {coupons.map((coupon) => (
+          <tbody className="bg-white divide-y divide-gray-200 w-full">
+            {filterCoupans?.length<1&&<div className="w-full flex flex-col justify-center items-center">
+            {" "}
+            <img
+              src={"/empty-folder.png"}
+              className="w-20 h-20"
+              alt={"no data | soulsun"}
+            />
+          <p className="font-light">List is empty.</p>
+          </div>}
+            {filterCoupans?.map((coupon) => (
               <tr key={coupon.code} className="hover:bg-gray-50">
                 <td className="px-2 py-1 whitespace-nowrap text-sm text-gray-900">
                   <div className="relative px-4 py-3 bg-gray-300 text-center rounded overflow-hidden">
@@ -82,26 +67,26 @@ const CouponsTable = () => {
                   </div>
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  {coupon.couponType}
+                  {coupon.discountType}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  ${coupon.couponAmount.toFixed(2)}
+                  ${coupon.discountValue}
                 </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-wrap max-w-[15rem]">
+                {/* <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-wrap max-w-[15rem]">
                   {coupon.productIds.join(", ")}
+                </td> */}
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                  {coupon.usageLimit}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  {coupon.usageLimits}
-                </td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  {coupon.expiryDate}
+                  {dayjs(coupon.expiryDate).format("DD-MM-YYYY")}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                   <div className="flex space-x-2">
-                    <button className="text-gray-400 hover:text-gray-500">
+                    <button className="text-gray-400 hover:text-gray-500" onClick={()=>handleDelete(coupon._id)}>
                       <Trash2 className="w-5 h-5" />
                     </button>
-                    <button className="text-gray-400 hover:text-gray-500">
+                    <button className="text-gray-400 hover:text-gray-500" onClick={()=>handleEdit(coupon)}>
                       <PenLine className="w-5 h-5" />
                     </button>
                   </div>
@@ -114,7 +99,7 @@ const CouponsTable = () => {
 
       {/* Mobile View */}
       <div className="md:hidden space-y-4">
-        {coupons.map((coupon) => (
+        {/* {filterCoupans.map((coupon) => (
           <div key={coupon.code} className="bg-white rounded-lg shadow p-4">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center space-x-3">
@@ -159,7 +144,7 @@ const CouponsTable = () => {
               </div>
             </div>
           </div>
-        ))}
+        ))} */}
       </div>
     </div>
   );

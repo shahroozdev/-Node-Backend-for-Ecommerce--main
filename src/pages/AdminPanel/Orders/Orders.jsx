@@ -54,7 +54,7 @@ const Orders = () => {
         </div>
 
         <div className="pt-5 px-4 sm:px-0">
-          <OrdersTable allorders={allOrders}/>
+          <OrdersTable allorders={allOrders} getAllCategories={getAllCategories}/>
         </div>
         <div className="px-4 flex justify-between gap-4 mt-5">
           <button className="btn1 w-[7rem] bg-white border border-gray-300 hover:bg-gray-200 h-fit">

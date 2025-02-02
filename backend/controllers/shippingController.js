@@ -1,6 +1,6 @@
 // controllers/shippingController.js
 const asyncCatch = require("../middlewares/asyncTryCatch");
-const { shippingSchema } = require("../middlewares/validator");
+const { shippingSchema, shippingStatusSchema } = require("../middlewares/validator");
 const Shipping = require("../models/shipping");
 
 // Add shipping information
@@ -90,6 +90,28 @@ const getAllOrdersList = async (req, res) => {
   }
 };
 
+const getStats = async(req, res) => {
+  try {
+    const totalOrders = await Shipping.countDocuments();
+    const totalSales = await Shipping.aggregate([
+      { $group: { _id: null, total: { $sum: "$totalPrice" } } },
+    ]);
+    const totalPurchasedItems = await Shipping.aggregate([
+      { $unwind: "$products" },
+      { $group: { _id: null, total: { $sum: "$products.quantity" } } },
+    ]);
+    const deliveredOrders = await Shipping.countDocuments({ isDelivered: true });
+
+    res.json({
+      totalOrders,
+      totalSales: totalSales[0]?.total || 0,
+      totalPurchasedItems: totalPurchasedItems[0]?.total || 0,
+      deliveredOrders,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+}
 const getSalesReport = async (req, res) => {
   const { range } = req.params; // Get the range from the request body (e.g., 12, 6, 3, 7d)
   
@@ -151,5 +173,25 @@ const getSalesReport = async (req, res) => {
   }
 }
 
+const updateShippingStatus = asyncCatch(shippingStatusSchema, async(req, res)=>{
+  const {id, status} = req.body
 
-module.exports = { addShipping, getShippingByUserId, getSalesReport, getAllOrdersList };
+  const shipping = await Shipping.findOne({ _id: id });
+  if (!shipping ) {
+    return res.status(404).json({ 
+      success: false, 
+      message: "No shipping details found for this id." 
+    });
+  }
+
+  shipping.isDelivered =status
+
+  await shipping.save()
+  res.status(200).json({
+    success: true,
+    message: "Shipping details updated successfully.",
+  });
+  
+})
+
+module.exports = { addShipping, getShippingByUserId, getSalesReport, getAllOrdersList , updateShippingStatus, getStats};

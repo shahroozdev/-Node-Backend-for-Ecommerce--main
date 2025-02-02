@@ -29,9 +29,9 @@ const AdminLogin = () => {
 
   const onSubmit = async (data) => {
     try {
-      const res = await apiClient.post({ url: "/auth/login", data });
+      const res = await apiClient.post({ url: "/auth/admin/login", data });
       if (res?.token) {
-        navigate("/");
+        navigate("/admin");
         reset();
       }
     } catch (error) {
