@@ -81,7 +81,7 @@ const Reports = () => {
               // },
               {
                 label: "Sales in this period",
-                value: "₹"+allOrders?.totalSales||0,
+                value: '₹'+(allOrders?.totalSales||0),
               },
               {
                 label: "orders placed",
@@ -118,7 +118,7 @@ const Reports = () => {
                 <p className="text-gray-400 uppercase">
                   Average gross sales amount
                 </p>
-                <h3 className="text-3xl font-semibold">{"₹"+allOrders?.totalSales||0}</h3>
+                <h3 className="text-3xl font-semibold">{"₹"+(allOrders?.totalSales||0)}</h3>
               </div>
               <div className="py-4 sm:p-4 max-h-[60vh]">
                 <Doughnut data={averageGrossSales} />

@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Modal from "../../../../components/Modal";
 import apiClient from "../../../../lib/utils";
 
-const OrdersTable = ({ allorders , getAllCategories}) => {
+const OrdersTable = ({ allorders , getAllCategories, isLoading}) => {
     const [isOpen, setIsOpen]= useState(false)
     const [order, setOrder]= useState({})
     
@@ -160,6 +160,11 @@ const OrdersTable = ({ allorders , getAllCategories}) => {
           </div>
         ))}
       </div>
+      {isLoading && (
+        <div className="w-full h-full flex justify-center items-center">
+          <div className="animate-spin text-grey-500 h-6 w-6 rounded-full" />
+        </div>
+      )}
       <Modal isOpen={isOpen} onClose={()=>setIsOpen(false)} title="Update Order Status">
       <div className="flex flex-col p-5">
         <label className="text-sm">Status</label>

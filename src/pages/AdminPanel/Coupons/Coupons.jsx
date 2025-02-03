@@ -10,14 +10,18 @@ const Coupons = () => {
   const [allCoupans, setAllCoupans] = useState();
   const [filterCoupans, setFilterCoupans] = useState();
   const [defaultValues, setDefaultValues] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const getAllCoupans = async () => {
     try {
+      setIsLoading(true)
       const res = await apiClient.get({ url: `/coupan` });
       setAllCoupans(res);
       setFilterCoupans(res);
     } catch (error) {
       console.log(error?.data?.message || "error");
+    }finally{
+      setIsLoading(false)
     }
   };
 
@@ -81,6 +85,7 @@ const Coupons = () => {
               filterCoupans={filterCoupans}
               getAllCoupans={getAllCoupans}
               handleEdit={handleEdit}
+              isLoading={isLoading}
             />
           )}
         </div>

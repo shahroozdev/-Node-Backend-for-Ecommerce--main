@@ -4,19 +4,23 @@ import { ArrowLeft, ArrowRight, Search } from "lucide-react";
 import Dropdown from "./components/Dropdown";
 import apiClient from "../../../lib/utils";
 
+
 const Orders = () => {
   const [sortBy, setSortBy] = React.useState("Date");
   const [allOrders, setAllOrders] = useState();
   const [pageNumber, setPageNumber] = useState(1);
-
+  const [isLoading, setIsLoading] = useState(false);
   const getAllCategories = async () => {
     try {
+      setIsLoading(true)
       const res = await apiClient.get({
         url: `/shipping/getAll?page=${pageNumber}`,
       });
       setAllOrders(res);
     } catch (error) {
       console.log(error?.data?.message || "error");
+    }finally{
+      setIsLoading(false)
     }
   };
 
@@ -71,6 +75,7 @@ const Orders = () => {
           <OrdersTable
             allorders={allOrders?.data}
             getAllCategories={getAllCategories}
+            isLoading={isLoading}
           />
         </div>
         <div>
