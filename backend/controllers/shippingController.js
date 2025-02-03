@@ -71,14 +71,38 @@ const getShippingByUserId = async (req, res) => {
 };
 const getAllOrdersList = async (req, res) => {
   try {
-    // Fetch all shipping orders from the Shipping model
-    const list = await Shipping.find().populate('user').exec();
+    // Extract page and limit from query parameters (set defaults if not provided)
+    let { page = 1, limit = 10 } = req.query;
 
-    // Send a response with the list of orders
+    // Convert page and limit to integers
+    page = parseInt(page);
+    limit = parseInt(limit);
+
+    // Calculate the number of documents to skip
+    const skip = (page - 1) * limit;
+
+    // Fetch shipping orders with pagination
+    const list = await Shipping.find()
+      .populate("user")
+      .skip(skip)
+      .limit(limit)
+      .exec();
+
+    // Get the total count of documents
+    const totalOrders = await Shipping.countDocuments();
+
+    // Send a response with pagination metadata
     res.status(200).json({
       success: true,
       message: "Shipping details fetched successfully.",
       data: list,
+      pagination: {
+        currentPage: page,
+        totalPages: Math.ceil(totalOrders / limit),
+        totalOrders,
+        hasNextPage: skip + list.length < totalOrders,
+        hasPrevPage: page > 1,
+      },
     });
   } catch (error) {
     // If an error occurs, send an error response
@@ -89,6 +113,7 @@ const getAllOrdersList = async (req, res) => {
     });
   }
 };
+
 
 const getStats = async(req, res) => {
   try {
@@ -113,52 +138,49 @@ const getStats = async(req, res) => {
   }
 }
 const getSalesReport = async (req, res) => {
-  const { range } = req.params; // Get the range from the request body (e.g., 12, 6, 3, 7d)
+  const { range } = req.params;
   
-  // Get current date
   const date = new Date();
   let startDate;
 
-  // Calculate start date based on the range
+  // Determine the start date based on the range
   if (range === "12") {
-    // Last 12 months
     startDate = new Date(date.setMonth(date.getMonth() - 12));
   } else if (range === "6") {
-    // Last 6 months
     startDate = new Date(date.setMonth(date.getMonth() - 6));
   } else if (range === "30d") {
-    // Last 3 months
     startDate = new Date(date.setDate(date.getDate() - 30));
   } else if (range === "7d") {
-    // Last 7 days
     startDate = new Date(date.setDate(date.getDate() - 7));
   } else {
-    // Default to 1 month if an invalid range is provided
     startDate = new Date(date.setMonth(date.getMonth() - 1));
   }
+
   try {
+    const formatString =
+      range === "12" || range === "6" || range === "3"
+        ? "%m" // Fix: Use "%m-%Y" instead of "%y"
+        : "%d"; // Fix for day range: Use "%d-%m-%Y"
+
     const salesData = await Shipping.aggregate([
-      // Match orders within the date range
       {
         $match: {
           createdAt: {
             $gte: new Date(startDate),
-            $lte:new Date(),
+            $lte: new Date(),
           },
-          // isDelivered: true, // Only consider delivered shipments
         },
       },
-      // Group by day or month (or even by user, depending on how you want to display the data)
       {
         $group: {
-          _id: { $dateToString: { format: "%d-%m", date: "$createdAt" } }, // Group by date
-          totalSales: { $sum: "$totalPrice" }, // Sum the totalPrice field for each day
-          totalOrders: { $sum: 1 }, // Count the number of orders (optional)
+          _id: { $dateToString: { format: formatString, date: "$createdAt" } }, // ✅ Fix applied
+          totalSales: { $sum: "$totalPrice" },
+          totalOrders: { $sum: 1 },
         },
       },
-      // Sort by date
       { $sort: { _id: 1 } },
     ]);
+
     return res.status(200).json({
       success: true,
       message: "Shipping details fetched successfully.",
@@ -171,7 +193,8 @@ const getSalesReport = async (req, res) => {
       error: error.message,
     });
   }
-}
+};
+
 
 const updateShippingStatus = asyncCatch(shippingStatusSchema, async(req, res)=>{
   const {id, status} = req.body

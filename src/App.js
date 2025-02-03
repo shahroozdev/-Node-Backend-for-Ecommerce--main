@@ -16,6 +16,7 @@ import { Toaster } from "react-hot-toast";
 import Login from "./pages/Login/Login";
 import Signup from "./pages/Signup/Signup";
 import ProtectedRoute from "./components/protectedRoute";
+import NotFound from "./components/notfound";
 
 const Home = lazy(() => import("./pages/Home/Home"));
 const Shop = lazy(() => import("./pages/Shop/Shop"));
@@ -30,7 +31,9 @@ const ProfileLayout = lazy(() => import("./components/ProfileLayout"));
 const UserProfile = lazy(() => import("./pages/User/UserProfile/UserProfile"));
 const Wishlist = lazy(() => import("./pages/User/Wishlist/Wishlist"));
 const Address = lazy(() => import("./pages/User/Address/Address"));
-const OrderHistory = lazy(() => import("./pages/User/OrderHistory/OrderHistory"));
+const OrderHistory = lazy(() =>
+  import("./pages/User/OrderHistory/OrderHistory")
+);
 const Support = lazy(() => import("./pages/User/Support/Support"));
 
 // Admin panel
@@ -66,7 +69,7 @@ function App() {
           />
           <Routes>
             {/* Home */}
-            <Route  path="/"  element={<Home />}/>
+            <Route path="/" element={<Home />} />
 
             {/* Products listing */}
             <Route path="/shop/*" element={<Navigate to="/shop/necklace" />} />
@@ -101,7 +104,14 @@ function App() {
             {/* Admin */}
             <Route path="/admin/login" element={<AdminLogin />} />
 
-            <Route path="/" element={<ProtectedRoute><ProfileLayout /></ProtectedRoute>}>
+            <Route
+              path="/"
+              element={
+                <ProtectedRoute>
+                  <ProfileLayout />
+                </ProtectedRoute>
+              }
+            >
               <Route path="profile" element={<UserProfile />} />
               <Route path="address" element={<Address />} />
               <Route path="orders" element={<OrderHistory />} />
@@ -109,7 +119,14 @@ function App() {
               <Route path="support" element={<Support />} />
             </Route>
             <Route path="/admin/login" element={<AdminLogin />} />
-            <Route path="/admin" element={<AdminPanelLayout />}>
+            <Route
+              path="/admin"
+              element={
+                <ProtectedRoute>
+                  <AdminPanelLayout />
+                </ProtectedRoute>
+              }
+            >
               <Route path="*" element={<Navigate to="/admin" />} />
               <Route path="" exact element={<Dashboard />} />
               <Route path="products" exact element={<ProductsPage />} />
@@ -117,6 +134,8 @@ function App() {
               <Route path="coupons" exact element={<Coupons />} />
               <Route path="reports" exact element={<Reports />} />
             </Route>
+            {/* Catch-all route for 404 */}
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </Router>
       </Suspense>

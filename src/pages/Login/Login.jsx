@@ -28,7 +28,7 @@ const Login = () => {
   };
   const onSubmit = async (data) => {
     try {
-      const res = await apiClient.post({ url: "/auth/login", data });
+      const res = await apiClient.post({ url: "/auth/login", data , showToast:true});
       if (res?.token) {
         navigate("/");
         reset();

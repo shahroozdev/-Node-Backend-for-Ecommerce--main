@@ -30,7 +30,6 @@ const Signup = () => {
   const onSubmit = async (data) => {
     try {
       const res = await apiClient.post({ url: "/auth/register", data });
-      console.log(res);
       navigate("/login");
     } catch (error) {
       console.log("error");

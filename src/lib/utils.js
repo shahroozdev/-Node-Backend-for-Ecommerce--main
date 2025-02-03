@@ -33,7 +33,7 @@ axiosInstance.interceptors.response.use(
       localStorage.setItem("key", res?.data?.token);
       localStorage.setItem("user", JSON.stringify(res?.data?.user));
     }
-    res?.data?.message && toast.success(res?.data?.message);
+    // res?.data?.message && toast.success(res?.data?.message);
     return res?.data;
   },
   (error) => {
@@ -46,7 +46,7 @@ axiosInstance.interceptors.response.use(
       toast.error("Session is expired you need to log in again.");
 
       // Check if the URL includes 'admin' and redirect accordingly
-      if (response?.config?.url?.includes("admin")) {
+      if (window.location.pathname.includes("admin")) {
         window.location.href = "/admin/login";
       } else {
         window.location.href = "/login";
@@ -77,9 +77,16 @@ class APIClient {
 
   request(config) {
     return new Promise((resolve, reject) => {
+      // Check if showToast is not provided and set it to true by default
+      const showToast =
+        config.showToast !== undefined ? config.showToast : false;
       axiosInstance
         .request(config)
         .then((res) => {
+          // Conditionally show toast if showToast is true
+          if (showToast && res?.message) {
+            toast.success(res?.message);
+          }
           resolve(res);
           return res;
         })
@@ -129,7 +136,9 @@ export const generateLabels = (range) => {
       const day = new Date(currentDate);
       day.setDate(currentDay - i);
       const dayName = day.toLocaleString("default", { weekday: "short" });
-      labels.push(dayName);
+      const dayNumber = day.getDate().toString().padStart(2, "0"); // Ensure day is 2 digits, e.g., "01"
+
+      labels.push(`${dayNumber}-${dayName}`);
     }
   } else if (range === "30d") {
     // For 7 days, generate the names of the last 30 days
@@ -137,7 +146,9 @@ export const generateLabels = (range) => {
       const day = new Date(currentDate);
       day.setDate(currentDay - i);
       const dayName = day.toLocaleString("default", { weekday: "short" });
-      labels.push(dayName);
+      const dayNumber = day.getDate().toString().padStart(2, "0"); // Ensure day is 2 digits, e.g., "01"
+
+      labels.push(`${dayNumber}-${dayName}`);
     }
   }
 

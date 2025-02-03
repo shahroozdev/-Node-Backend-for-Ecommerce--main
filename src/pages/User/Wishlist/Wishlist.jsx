@@ -8,7 +8,6 @@ const Wishlist = () => {
   const setWishlist = async () => {
     try {
       const res = await apiClient.get({ url: `/wishlist` });
-      console.log(res);
       setItems(res?.wishlist?.products);
     } catch (error) {
       console.log(error?.data?.message || "error");

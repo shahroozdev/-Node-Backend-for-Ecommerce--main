@@ -1,16 +1,34 @@
 import {
-  FilePlus2,
+  // FilePlus2,
   LogOut,
   Search,
 } from "lucide-react";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import LineChart from "./components/LineChart";
 import "./Dashboard.css";
 import Transactions from "./components/Transactions";
+import apiClient from "../../../lib/utils";
+import { useNavigate } from "react-router-dom";
 
 
 const Dashboard = () => {
     const [range, setRange] = useState('12');
+    const [allOrders, setAllOrders] =useState()
+    const navigate = useNavigate();
+
+    const getAllCategories = async () => {
+      try {
+        const res = await apiClient.get({ url: `/shipping/getStats`,});
+        setAllOrders(res)
+      } catch (error) {
+        console.log(error?.data?.message || "error");
+      }
+    };
+  
+    useEffect(() => {
+      getAllCategories();
+    }, []);
+
   return (
     <div className="w-full relative">
       <div className="md:ml-[12rem] bg-white fixed top-0 left-0 w-full md:max-w-[calc(100%-12rem)] p-4 flex justify-between items-center gap-4">
@@ -23,7 +41,11 @@ const Dashboard = () => {
           />
         </div>
         <div className="flex items-center gap-5">
-          <button className="btn1 bg-gray-300 text-black hover:bg-gray-300/80 hover:-translate-y-1">
+          <button className="btn1 bg-gray-300 text-black hover:bg-gray-300/80 hover:-translate-y-1" onClick={() => {
+                  localStorage.removeItem("key");
+                  localStorage.removeItem("user");
+                  navigate("/admin/login");
+                }}>
             <LogOut size={20} className="text-gray-600" />
             <span>Logout</span>
           </button>
@@ -56,22 +78,22 @@ const Dashboard = () => {
             <div className="rounded-lg border p-4 space-y-2 h-fit">
               <small className="text-gray-400 uppercase">Net Sales</small>
               <div className="w-full flex items-center justify-between gap-4">
-                <h5 className="font-semibold text-xl"> $10,562</h5>
-                <small className="text-green-600">+5%</small>
+                <h5 className="font-semibold text-xl"> ₹{allOrders?.totalSales}</h5>
+                {/* <small className="text-green-600">+5%</small> */}
               </div>
             </div>
-            <div className="rounded-lg border p-4 space-y-2 h-fit">
+            {/* <div className="rounded-lg border p-4 space-y-2 h-fit">
               <small className="text-gray-400 uppercase">earning</small>
               <div className="w-full flex items-center justify-between gap-4">
                 <h5 className="font-semibold text-xl"> $2,38,485</h5>
                 <small className="text-green-600">+14%</small>
               </div>
-            </div>
+            </div> */}
             <div className="rounded-lg border p-4 space-y-2 h-fit">
               <small className="text-gray-400 uppercase">Order</small>
               <div className="w-full flex items-center justify-between gap-4">
-                <h5 className="font-semibold text-xl"> 10,620</h5>
-                <small className="text-green-600">+5%</small>
+                <h5 className="font-semibold text-xl"> {allOrders?.totalOrders}</h5>
+                {/* <small className="text-green-600">+5%</small> */}
               </div>
             </div>
           </section>

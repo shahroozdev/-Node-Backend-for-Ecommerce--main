@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 const Checkout = () => {
   const cartList = JSON.parse(localStorage.getItem("cartItems")) || [];
   const [cartItems, setCartItems] = useState(cartList);
+  const [total, setTotal] = useState(cartItems.reduce((a, b) => a + b.price * b.quantity, 0));
   return (
     <div className="pt-[5.5rem]">
       <Header />
@@ -15,12 +16,12 @@ const Checkout = () => {
         <section className="wrapper flex flex-col-reverse lg:grid grid-cols-[65%_auto] gap-7">
           <div className="py-[3rem]">
             <ShippingAddress
-              total={cartItems.reduce((a, b) => a + b.price * b.quantity, 0)}
+              total={total}
               setCartItems={setCartItems}
             />
           </div>
           <div className="py-[3rem] bg-[#EFEFEF]">
-            <CartItems />
+            <CartItems setTotal={setTotal} total={total}/>
           </div>
         </section>
       ) : (

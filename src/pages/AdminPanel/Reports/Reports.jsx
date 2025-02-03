@@ -34,7 +34,6 @@ const Reports = () => {
   const getAllCategories = async () => {
     try {
       const res = await apiClient.get({ url: `/shipping/getStats`,});
-      console.log(res)
       setAllOrders(res)
     } catch (error) {
       console.log(error?.data?.message || "error");
@@ -63,7 +62,6 @@ const Reports = () => {
       },
     ],
   };
-  console.log(allOrders)
   return (
     <div className="w-full relative">
       <div className="pb-[3rem] sm:py-[2rem] sm:px-4">

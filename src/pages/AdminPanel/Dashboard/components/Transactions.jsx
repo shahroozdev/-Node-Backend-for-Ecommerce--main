@@ -1,5 +1,7 @@
 import { ChevronRight } from "lucide-react";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import apiClient from "../../../../lib/utils";
+import dayjs from "dayjs";
 
 const transactions = [
   {
@@ -33,6 +35,20 @@ const transactions = [
 ];
 
 const Transactions = () => {
+  const [allOrders, setAllOrders] =useState()
+
+  const getAllCategories = async () => {
+    try {
+      const res = await apiClient.get({ url: `/shipping/getAll`,});
+      setAllOrders(res?.data)
+    } catch (error) {
+      console.log(error?.data?.message || "error");
+    }
+  };
+
+  useEffect(() => {
+    getAllCategories();
+  }, []);
   return (
     <div className="w-full border rounded-lg">
       <div className="w-full">
@@ -45,36 +61,32 @@ const Transactions = () => {
         <hr />
         <div className="space-y-4">
           <div className="w-full">
-            {transactions.map((item) => (
+            {allOrders?.map((item) => (
               <div
-                key={item.id}
+                key={item._id}
                 className="p-5 sm:p-3 flex flex-col-reverse flex-wrap sm:grid grid-cols-3 gap-4 text-[.8rem] items-center odd:bg-gray-100"
               >
                 <div className="">
-                  {item.isCompleted ? (
+                  {/* {item.isDelivered ? ( */}
                     <span className="min-w-[6rem] w-fit flex justify-center items-center gap-2 rounded-lg px-2 py-1 bg-green-100 text-green-600">
                       <div className="h-2 w-2 bg-green-600 rounded-full"></div>
                       <span>Completed</span>
                     </span>
-                  ) : (
+                  {/* ) : (
                     <span className="min-w-[6rem] w-fit flex justify-center items-center gap-2 rounded-lg px-2 py-1 bg-red-100 text-red-600">
                       <div className="h-2 w-2 bg-red-600 rounded-full"></div>
                       <span>Failed</span>
                     </span>
-                  )}
+                  )} */}
                 </div>
                 <div className="space-y-1 text-center">
-                  <p>UPI ID : {item.upiId}</p>
+                  <p>UPI ID : {item._id}</p>
                 </div>
                 <div className="space-y-1 sm:place-self-end text-center">
                   <p className="font-semibold leading-none">
-                    {new Date(item.date).toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "short",
-                      day: "numeric",
-                    })}
+                    {dayjs(item.createdAt).format('DD-MM-YYYY')}
                   </p>
-                  <p className="leading-none">${item.amount}</p>
+                  <p className="leading-none">₹{item?.totalPrice}</p>
                 </div>
               </div>
             ))}

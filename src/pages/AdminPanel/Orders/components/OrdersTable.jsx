@@ -15,7 +15,6 @@ const OrdersTable = ({ allorders , getAllCategories}) => {
           url: `/shipping/status`,
           data:{id:order.id, status:Boolean(order.status)}
         });
-      console.log(res);
       if (res.message.includes("successfully")) {
         setOrder({})
         setIsOpen(false)

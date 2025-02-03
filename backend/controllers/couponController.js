@@ -4,72 +4,79 @@ const asyncCatch = require("../middlewares/asyncTryCatch");
 const { createCouponSchema } = require("../middlewares/validator");
 const Coupon = require("../models/Coupon");
 
+
 const applyCoupon = async (req, res) => {
-  const { code, cartTotal } = req.body;
-  // const {id:userId} = req.user;
+  try {
+    const { code, cartTotal } = req.body;
+    const { id:userId} = req.user;
 
-    // Find the coupon by code
-    const coupon = await Coupon.findOne({ code });
-
+    // 1️⃣ Check if the coupon exists
+    const coupon = await Coupon.findOne({ code});
     if (!coupon) {
-      return res.status(404).json({ message: "Invalid coupon code" });
+      return res.status(404).json({ success: false, message: "Invalid coupon code" });
     }
 
-    // Check if coupon is expired
-    if (new Date() > new Date(coupon.expiryDate)) {
-      return res.status(400).json({ message: "Coupon has expired" });
+    // 2️⃣ Check if the coupon is expired
+    const now = new Date();
+    if (coupon.expiryDate < now) {
+      return res.status(400).json({ success: false, message: "Coupon has expired" });
     }
 
-    // Check if minimum cart amount is met
+    // 3️⃣ Check if the coupon usage limit is reached
+    if (coupon.usageLimit <= 0) {
+      return res.status(400).json({ success: false, message: "Coupon usage limit reached" });
+    }
+
+    // 4️⃣ Check if the user has already used this coupon more than allowed
+    const userCouponUsage = coupon.usedBy.find((u) => u.userId.toString() === userId);
+
+    if (userCouponUsage && userCouponUsage.timesUsed >= coupon.usageLimitPerUser) {
+      return res.status(400).json({ success: false, message: "You have already used this coupon" });
+    }
+
+    // 5️⃣ Check if the cart total meets the minimum required amount
     if (cartTotal < coupon.minimumAmount) {
-      return res.status(400).json({ message: `Minimum order amount should be ${coupon.minimumAmount}` });
+      return res.status(400).json({ success: false, message: `Minimum purchase required is ${coupon.minimumAmount}` });
     }
 
-    // Apply discount based on type
-    let discountAmount = 0;
+    // 6️⃣ Calculate the discount
+    let discount = 0;
     if (coupon.discountType === "percentage") {
-      discountAmount = (coupon.discountValue / 100) * cartTotal;
-    } else if (coupon.discountType === "fixed") {
-      discountAmount = coupon.discountValue;
+      discount = (cartTotal * coupon.discountValue) / 100;
+    } else {
+      discount = coupon.discountValue;
     }
 
-    // Ensure discount is not greater than cart total
-    discountAmount = Math.min(discountAmount, cartTotal);
+    // Ensure discount does not exceed cart total
+    discount = Math.min(discount, cartTotal);
 
-    res.status(200).json({
+    // 7️⃣ Deduct the coupon usage limit
+    coupon.usageLimit -= 1;
+
+    // 8️⃣ Update coupon's `usedBy` list
+    if (userCouponUsage) {
+      userCouponUsage.timesUsed += 1;
+    } else {
+      coupon.usedBy.push({ userId, timesUsed: 1 });
+    }
+
+    await coupon.save();
+
+    return res.json({
+      success: true,
       message: "Coupon applied successfully",
-      discountAmount,
-      finalTotal: cartTotal - discountAmount,
+      discount,
+      finalTotal: cartTotal - discount,
     });
-  // const { couponCode } = req.body;
 
-  // try {
-  //   // Check if coupon exists
-  //   const coupon = await Coupon.findOne({ code: couponCode });
-  //   if (!coupon) {
-  //     return res.status(400).json({ message: "Invalid coupon code" });
-  //   }
+  } catch (error) {
 
-  //   // Check if coupon is expired
-  //   if (new Date(coupon.expiryDate) < new Date()) {
-  //     return res.status(400).json({ message: "Coupon has expired" });
-  //   }
-
-  //   // Check if coupon is already used
-  //   if (coupon.isUsed) {
-  //     return res.status(400).json({ message: "Coupon has already been used" });
-  //   }
-
-  //   // Mark the coupon as used (optional)
-  //   coupon.isUsed = true;
-  //   await coupon.save();
-
-  //   return res.status(200).json({ message: "Coupon applied successfully", discount: coupon.discount });
-  // } catch (error) {
-  //   console.error(error);
-  //   return res.status(500).json({ message: "Server error" });
-  // }
+    res.status(500).json({ success: false, message: "Server error" });
+  }
 };
+
+
+
 const createCoupan = asyncCatch(createCouponSchema, async (req, res) => {
   try {
     // Check if the coupon code already exists in the database

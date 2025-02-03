@@ -16,7 +16,6 @@ const AddCouponForm = ({ onClose, getAllCoupans, defaultValues }) => {
 
   const [errors, setErrors] = useState({});
 
-  console.log(defaultValues);
   const validateForm = () => {
     const newErrors = {};
     if (!formData.code) newErrors.code = "Coupon Code is required";
@@ -56,14 +55,16 @@ const AddCouponForm = ({ onClose, getAllCoupans, defaultValues }) => {
         res = await apiClient.put({
           url: `/coupan/${defaultValues?._id}`,
           data: formData,
+          showToast:true
         });
       } else {
         res = await apiClient.post({
           url: "/coupan",
           data: formData,
+          showToast:true
         });
       }
-      console.log(res);
+
       if (res.message.includes("successfully")) {
         onClose();
         getAllCoupans();

@@ -1,5 +1,5 @@
 import React from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import {
   Home,
   LogOut,
@@ -9,6 +9,7 @@ import {
   StickyNote,
 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
+
 
 const pages = [
   {
@@ -36,15 +37,16 @@ const pages = [
     name: "Reports",
     path: "/admin/reports",
   },
-//   {
-//     icon: Wallet,
-//     name: "Withdraw",
-//     path: "/admin/withdraw",
-//   },
+  //   {
+  //     icon: Wallet,
+  //     name: "Withdraw",
+  //     path: "/admin/withdraw",
+  //   },
 ];
 
 const AdminPanelLayout = () => {
   const { pathname } = useLocation();
+  const navigate = useNavigate();
   return (
     <div className="md:max-h-[100vh]">
       <div className="grid md:grid-cols-[12rem,1fr]">
@@ -76,7 +78,14 @@ const AdminPanelLayout = () => {
                   ))}
                 </div>
               </div>
-              <button className="flex items-center gap-2 w-full py-[.5rem] px-[1rem] rounded-md">
+              <button
+                className="flex items-center gap-2 w-full py-[.5rem] px-[1rem] rounded-md"
+                onClick={() => {
+                  localStorage.removeItem("key");
+                  localStorage.removeItem("user");
+                  navigate("/admin/login");
+                }}
+              >
                 <LogOut size={20} className="text-gray-600" />
                 <span>Logout</span>
               </button>

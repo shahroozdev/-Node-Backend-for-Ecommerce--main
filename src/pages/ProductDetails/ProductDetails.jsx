@@ -72,7 +72,6 @@ const ProductDetails = () => {
         const res3 = await apiClient.get({ url: `/products/byCategory/rings` });
         setNecklaceItems(res2?.products);
         setEaringsItems(res3?.products);
-        console.log(res);
         const itemExistInCart = cartData.find((item) => item.id === productId);
         setProductDetails({
           ...res?.product,
@@ -100,7 +99,7 @@ const ProductDetails = () => {
   const addToWishList = async () => {
     if(token){
     try {
-      await apiClient.post({ url: `/wishlist`, data: { productId } });
+      await apiClient.post({ url: `/wishlist`, data: { productId }  , showToast:true});
     } catch (error) {
       console.log(error?.data?.message);
     }

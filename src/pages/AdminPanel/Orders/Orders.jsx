@@ -6,13 +6,15 @@ import apiClient from "../../../lib/utils";
 
 const Orders = () => {
   const [sortBy, setSortBy] = React.useState("Date");
-  const [allOrders, setAllOrders] =useState()
+  const [allOrders, setAllOrders] = useState();
+  const [pageNumber, setPageNumber] = useState(1);
 
   const getAllCategories = async () => {
     try {
-      const res = await apiClient.get({ url: `/shipping/getAll`,});
-      console.log(res)
-      setAllOrders(res?.data)
+      const res = await apiClient.get({
+        url: `/shipping/getAll?page=${pageNumber}`,
+      });
+      setAllOrders(res);
     } catch (error) {
       console.log(error?.data?.message || "error");
     }
@@ -20,7 +22,19 @@ const Orders = () => {
 
   useEffect(() => {
     getAllCategories();
-  }, []);
+  }, [pageNumber]);
+
+  const handleNext = () => {
+    if (allOrders?.pagination?.hasNextPage) {
+      setPageNumber((prev) => prev + 1);
+    }
+  };
+
+  const handlePrevious = () => {
+    if (pageNumber > 1) {
+      setPageNumber((prev) => prev - 1);
+    }
+  };
 
   return (
     <div className="w-full relative">
@@ -54,14 +68,40 @@ const Orders = () => {
         </div>
 
         <div className="pt-5 px-4 sm:px-0">
-          <OrdersTable allorders={allOrders} getAllCategories={getAllCategories}/>
+          <OrdersTable
+            allorders={allOrders?.data}
+            getAllCategories={getAllCategories}
+          />
         </div>
+        <div>
+          Page {pageNumber} of {allOrders?.pagination?.totalPages}(
+          {(pageNumber - 1) * 10 + 1} -
+          {Math.min(pageNumber * 10, allOrders?.pagination?.totalOrders)}
+          of {allOrders?.pagination?.totalOrders} results)
+        </div>
+
         <div className="px-4 flex justify-between gap-4 mt-5">
-          <button className="btn1 w-[7rem] bg-white border border-gray-300 hover:bg-gray-200 h-fit">
+          <button
+            className={`btn1 w-[7rem] bg-white border border-gray-300 h-fit ${
+              pageNumber === 1
+                ? "opacity-50 cursor-not-allowed"
+                : "hover:bg-gray-200"
+            }`}
+            onClick={handlePrevious}
+          >
             <ArrowLeft size={16} />
             Previous
           </button>
-          <button className="btn1 w-[7rem] bg-white border border-gray-300 hover:bg-gray-200 h-fit">
+          <button
+            className={`btn1 w-[7rem] bg-white border border-gray-300 h-fit ${
+              !allOrders?.pagination?.hasNextPage
+                ? "opacity-50 cursor-not-allowed"
+                : "hover:bg-gray-200"
+            }`}
+            F
+            onClick={handleNext}
+            disabled={!allOrders?.pagination?.hasNextPage}
+          >
             Next
             <ArrowRight size={16} />
           </button>

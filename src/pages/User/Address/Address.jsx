@@ -35,7 +35,6 @@ useEffect(()=>{
 },[])
 
   const handleFormSubmit = async(data) => {
-    console.log(data, 'data')
     try {
       const res =await apiClient.post({url:`/profile`, data})
       if(res){
@@ -46,7 +45,6 @@ useEffect(()=>{
     }
   };
 
-  console.log( getValues(), errors)
   return (
     <div className="max-w-2xl">
       <form onSubmit={handleSubmit(handleFormSubmit)}>

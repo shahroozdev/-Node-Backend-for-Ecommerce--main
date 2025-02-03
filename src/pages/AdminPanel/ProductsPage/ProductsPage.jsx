@@ -40,7 +40,6 @@ const ProductsPage = () => {
   const [showAddProductModal, setShowAddProductModal] = React.useState({status:false, defaultValues:null});
   const [showAddCategoryModal, setShowAddCategoryModal] = React.useState(false);
 
-  console.log(showAddProductModal)
   return (
     <div className="w-full relative">
       <div className="pb-[3rem] sm:py-[2rem] sm:px-4">
@@ -91,7 +90,6 @@ const ProductsPage = () => {
                 label="Category"
                 options={["All", ...allCategories]}
                 onChange={(item) => {
-                  console.log(item)
                   setSelectedDropdownCategory(item);
                   setFilteredProducts(item==='All'?allProducts:filteredProducts.filter(ele=>(ele.Category.name === item)))
                 }}
