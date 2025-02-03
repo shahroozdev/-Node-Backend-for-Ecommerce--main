@@ -6,6 +6,7 @@ import AddProductForm from "./components/AddProductForm";
 import AddCategoryForm from "./components/AddCategoryForm";
 import apiClient from "../../../lib/utils";
 
+
 const ProductsPage = () => {
   // const [selectedCategory, setSelectedCategory] = React.useState("All");
   const [selectedDropdownCategory, setSelectedDropdownCategory] =
@@ -13,13 +14,17 @@ const ProductsPage = () => {
     const [allProducts, setAllProducts] = useState([])
     const [filteredProducts, setFilteredProducts] = useState([])
     const [allCategories, setAllCategories] = useState([])
+      const [isLoading, setIsLoading] = useState(false);
     const getAllProducts = async () => {
       try {
+        setIsLoading(true)
         const res = await apiClient.get({ url: `/products/all`,});
         setAllProducts(res?.products)
         setFilteredProducts(res?.products)
       } catch (error) {
         console.log(error?.data?.message || "error");
+      }finally{
+        setIsLoading(false)
       }
     };
     const getAllCategories = async () => {
@@ -107,6 +112,7 @@ const ProductsPage = () => {
             showEditFormModal={setShowAddProductModal}
             allProducts={filteredProducts}
             getAllProducts={getAllProducts}
+            isLoading={isLoading}
           />
         </div>
       </div>

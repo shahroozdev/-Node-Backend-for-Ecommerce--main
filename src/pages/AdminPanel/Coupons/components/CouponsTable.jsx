@@ -76,7 +76,7 @@ const CouponsTable = ({
                   {coupon.discountType}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  ${coupon.discountValue}
+                {coupon.discountType === 'percentage'?'':'₹'}{coupon.discountValue} {coupon.discountType === 'percentage'?'%':''}
                 </td>
                 {/* <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 text-wrap max-w-[15rem]">
                   {coupon.productIds.join(", ")}
@@ -144,7 +144,7 @@ const CouponsTable = ({
 
                 <div className="text-sm text-gray-500">Coupon Amount:</div>
                 <div className="text-sm text-gray-900">
-                  {coupon.discountValue}
+                {coupon.discountType === 'percentage'?'':'₹'}{coupon.discountValue} {coupon.discountType === 'percentage'?'%':''}
                 </div>
 
                 {/* <div className="text-sm text-gray-500">Product IDs:</div>

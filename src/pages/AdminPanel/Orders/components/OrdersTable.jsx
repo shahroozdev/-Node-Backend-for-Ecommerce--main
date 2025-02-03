@@ -133,12 +133,12 @@ const OrdersTable = ({ allorders , getAllCategories, isLoading}) => {
               <div className="grid grid-cols-2 gap-2">
                 <div className="text-sm text-gray-500">Price:</div>
                 <div className="text-sm text-gray-900">
-                  ${order?.totalPrice?.toFixed(2)}
+                ₹{order?.totalPrice?.toFixed(2)}
                 </div>
 
                 <div className="text-sm text-gray-500">Order Total:</div>
                 <div className="text-sm text-gray-900">
-                  ${order?.totalPrice?.toFixed(2)}
+                ₹{order?.totalPrice?.toFixed(2)}
                 </div>
 
                 <div className="text-sm text-gray-500">Status:</div>

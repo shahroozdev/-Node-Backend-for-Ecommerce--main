@@ -3,7 +3,7 @@ import { PenLine, Trash2 } from "lucide-react";
 import dayjs from "dayjs";
 import apiClient from "../../../../lib/utils";
 
-const ProductsTable = ({ showEditFormModal ,allProducts, getAllProducts}) => {
+const ProductsTable = ({ showEditFormModal ,allProducts, getAllProducts, isLoading}) => {
   const handleDelete =async(id)=>{
     try {
       await apiClient.post({ url: "/products/status", data:{id} });
@@ -166,6 +166,11 @@ const ProductsTable = ({ showEditFormModal ,allProducts, getAllProducts}) => {
           </div>
         ))}
       </div>
+      {isLoading && (
+        <div className="w-full h-full flex justify-center items-center">
+          <div className="animate-spin text-grey-500 h-6 w-6 rounded-full" />
+        </div>
+      )}
     </div>
   );
 };
