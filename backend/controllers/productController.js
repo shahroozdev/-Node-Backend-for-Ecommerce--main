@@ -2,8 +2,9 @@
 
 const Category = require("../models/category");
 const Product = require("../models/product");
-const multer = require('multer');
-const { put } = require("@vercel/blob");
+const multer = require("multer");
+// const { put } = require("@vercel/blob");
+const cloudinary = require("../utils/cloudinary");
 // const dotenv = require("dotenv");
 
 // dotenv.config();
@@ -23,50 +24,87 @@ const { put } = require("@vercel/blob");
 // Multer setup for handling file uploads
 const storage = multer.memoryStorage();
 const upload = multer({ storage }); // Initialize multer correctly
+
+// Upload images to Cloudinary
+const uploadImageToCloudinary = async (fileBuffer) => {
+  return new Promise((resolve, reject) => {
+    const uploadStream = cloudinary.uploader.upload_stream(
+      { folder: "products" }, // Uploads to "products" folder
+      (error, result) => {
+        if (error) {
+          reject(error);
+        } else {
+          resolve(result.secure_url);
+        }
+      }
+    );
+
+    uploadStream.end(fileBuffer);
+  });
+};
 // Function to add a new product
 const addProduct = async (req, res) => {
-  const { name, price, description, Category:categoryName, isBestSeller=false} = req.body;
+  const {
+    name,
+    price,
+    description,
+    Category: categoryName,
+    isBestSeller = false,
+  } = req.body;
   const categoryFound = await Category.findOne({ name: categoryName });
-      // Ensure a file is uploaded
- 
-    // Ensure that images are uploaded
-    if (!req.files || req.files.length !== 2) {
-      return res.status(400).json({ message: "Two image files are required" });
-    }   
+  // Ensure a file is uploaded
+
+  // Ensure that images are uploaded
+  if (!req.files || req.files.length !== 2) {
+    return res.status(400).json({ message: "Two image files are required" });
+  }
   // Check if category was found
   if (!categoryFound) {
     return res.status(404).json({ message: "Category not found" });
   }
-    // Prepare the image paths (relative to public folder)
-    // const imagePaths = req.files.map(file => `/public/images/${file.filename}`);
+  // Prepare the image paths (relative to public folder)
+  // const imagePaths = req.files.map(file => `/public/images/${file.filename}`);
 
-          // Upload images to Vercel Blob
-          const imageUrls = await Promise.all(
-            req.files.map(async (file) => {
-              const blob = await put(`products/${Date.now()}-${file.originalname}`, file.buffer, {
-                access: "public",
-                // token:process.env.VERCEL_BLOB_READ_WRITE_TOKEN
-              });
-              return blob.url; // Save the public URL
-            })
-          );
+  // Upload images to Vercel Blob
+  // const imageUrls = await Promise.all(
+  //   req.files.map(async (file) => {
+  //     const blob = await put(`products/${Date.now()}-${file.originalname}`, file.buffer, {
+  //       access: "public",
+  //       // token:process.env.VERCEL_BLOB_READ_WRITE_TOKEN
+  //     });
+  //     return blob.url; // Save the public URL
+  //   })
+  // );
+
+  // Upload images to Cloudinary
+  const imageUrls = await Promise.all(
+    req.files.map((file) => uploadImageToCloudinary(file.buffer))
+  );
   try {
     const newProduct = new Product({
       name,
       price,
       description,
-      Category:categoryFound._id,
-      images:imageUrls,
+      Category: categoryFound._id,
+      images: imageUrls,
       isBestSeller,
     });
     await newProduct.save();
-    res.status(201).json({ message: "Product added successfully", product: newProduct });
+    res
+      .status(201)
+      .json({ message: "Product added successfully", product: newProduct });
   } catch (error) {
     res.status(500).json({ message: "Error adding product", error });
   }
 };
 const updateProduct = async (req, res) => {
-  const { name, price, description, Category: categoryName, isBestSeller = false } = req.body;
+  const {
+    name,
+    price,
+    description,
+    Category: categoryName,
+    isBestSeller = false,
+  } = req.body;
   const categoryFound = await Category.findOne({ name: categoryName });
 
   if (!categoryFound) {
@@ -83,16 +121,53 @@ const updateProduct = async (req, res) => {
     const updatedImages = [...existingImages];
 
     if (req.files) {
-      req.files.forEach((file, index) => {
-        // Replace the first image if the user has uploaded a new one for img1
-        if (index === 0 && updatedImages.length > 0) {
-          updatedImages[0] = file.path;  // Replace the first image
+        // for multer
+      // req.files.forEach((file, index) => {
+      //   // Replace the first image if the user has uploaded a new one for img1
+      //   if (index === 0 && updatedImages.length > 0) {
+      //     updatedImages[0] = file.path; // Replace the first image
+      //   }
+      //   // Replace the second image if the user has uploaded a new one for img2
+      //   if (index === 1 && updatedImages.length > 1) {
+      //     updatedImages[1] = file.path; // Replace the second image
+      //   }
+      // });
+
+        //for cloudinary
+        if (req.files) {
+          await Promise.all(
+            req.files.map(async (file, index) => {
+              if (updatedImages[index]) {
+                // **Step 1:** Delete the existing image at the same index
+                try {
+                  const publicId = updatedImages[index].split("/").pop().split(".")[0]; // Extract Cloudinary public ID
+                  await cloudinary.uploader.destroy(`products/${publicId}`); // Delete from Cloudinary
+                } catch (error) {
+                  console.error("Error deleting old image from Cloudinary:", error);
+                }
+              }
+    
+              // **Step 2:** Upload new image to Cloudinary
+              const newImageUrl = await new Promise((resolve, reject) => {
+                const uploadStream = cloudinary.uploader.upload_stream(
+                  { folder: "products" },
+                  (error, result) => {
+                    if (error) {
+                      console.error("Cloudinary upload error:", error);
+                      reject("Image upload failed");
+                    } else {
+                      resolve(result.secure_url);
+                    }
+                  }
+                );
+                uploadStream.end(file.buffer);
+              });
+    
+              // Replace only the updated image in the array
+              updatedImages[index] = newImageUrl;
+            })
+          );
         }
-        // Replace the second image if the user has uploaded a new one for img2
-        if (index === 1 && updatedImages.length > 1) {
-          updatedImages[1] = file.path;  // Replace the second image
-        }
-      });
     }
 
     // Update product with new or retained images
@@ -109,7 +184,9 @@ const updateProduct = async (req, res) => {
       { new: true }
     );
 
-    res.status(200).json({updatedProduct, message: "Product updated successfully"});
+    res
+      .status(200)
+      .json({ updatedProduct, message: "Product updated successfully" });
   } catch (error) {
     res.status(500).json({ message: "Error updating product", error });
   }
@@ -118,11 +195,11 @@ const updateProduct = async (req, res) => {
 // Function to get all products
 const getAllProducts = async (req, res) => {
   try {
-    const products = await Product.find({status:true})
-    .populate('Category', 'name')  // This should work if the 'Category' model is correct
-    .exec();  // Use .exec() to explicitly return a promise
-    Category.find({}, 'name')  // Find all categories and return only the 'name' field
-  .catch(error => console.log(error));
+    const products = await Product.find({ status: true })
+      .populate("Category", "name") // This should work if the 'Category' model is correct
+      .exec(); // Use .exec() to explicitly return a promise
+    Category.find({}, "name") // Find all categories and return only the 'name' field
+      .catch((error) => console.log(error));
     res.status(200).json({ products });
   } catch (error) {
     res.status(500).json({ message: "Error fetching products", error });
@@ -131,18 +208,23 @@ const getAllProducts = async (req, res) => {
 const getProductsByCategory = async (req, res) => {
   try {
     const { category } = req.params; // Extract category from route parameters
-       // Find the category by name
-       const categoryFound = await Category.findOne({ name: category });
-    
-       // Check if category was found
-       if (!categoryFound) {
-         return res.status(404).json({ message: "Category not found" });
-       }
+    // Find the category by name
+    const categoryFound = await Category.findOne({ name: category });
+
+    // Check if category was found
+    if (!categoryFound) {
+      return res.status(404).json({ message: "Category not found" });
+    }
     // Query products based on category
-    const products = await Product.find({Category: categoryFound._id , status:true});
+    const products = await Product.find({
+      Category: categoryFound._id,
+      status: true,
+    });
 
     if (!products.length) {
-      return res.status(404).json({ message: "No products found in this category" });
+      return res
+        .status(404)
+        .json({ message: "No products found in this category" });
     }
 
     res.status(200).json({ products });
@@ -150,26 +232,26 @@ const getProductsByCategory = async (req, res) => {
     res.status(500).json({ message: "Error fetching products", error });
   }
 };
-const changeProductStatus=async(req, res)=>{
-  const {id} = req.body
+const changeProductStatus = async (req, res) => {
+  const { id } = req.body;
   try {
-     // Find the product by ID
-     const product = await Product.findById(id);
+    // Find the product by ID
+    const product = await Product.findById(id);
 
-     if (!product) {
-       return res.status(404).json({ message: "Product not found" });
-     }
- 
-     // Toggle status (if true, make false; if false, make true)
-     product.status = !product.status;
-     
-     // Save the updated product
-     await product.save();
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    // Toggle status (if true, make false; if false, make true)
+    product.status = !product.status;
+
+    // Save the updated product
+    await product.save();
     res.status(200).json({ message: "Product status updated", product });
   } catch (error) {
     res.status(500).json({ message: "Error on updating products", error });
   }
-}
+};
 // Function to get a product by ID
 const getProductById = async (req, res) => {
   const { id } = req.params;
@@ -280,5 +362,14 @@ const searchProducts = async (req, res) => {
   }
 };
 
-
-module.exports = { addProduct, getAllProducts, getProductById, updateProduct, deleteProduct, searchProducts, getProductsByCategory, changeProductStatus, upload};
+module.exports = {
+  addProduct,
+  getAllProducts,
+  getProductById,
+  updateProduct,
+  deleteProduct,
+  searchProducts,
+  getProductsByCategory,
+  changeProductStatus,
+  upload,
+};

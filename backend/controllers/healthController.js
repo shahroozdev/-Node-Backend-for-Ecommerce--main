@@ -70,7 +70,7 @@ const seedDB = async (req, res) => {
     console.log("Inserted product data successfully!");
     // Check if admin already exists
     // Hash Password
-    adminData.password = await bcrypt.hash(adminData.password, 10);
+    // adminData.password = await bcrypt.hash(adminData.password, 10);
     // Create Admin User
     const admin = new User(adminData);
     await admin.save();
