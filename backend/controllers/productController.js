@@ -21,7 +21,8 @@ const { put } = require("@vercel/blob");
 // const upload = multer({ storage });
 
 // Multer setup for handling file uploads
-const upload = multer({ storage: multer.memoryStorage() }).array("images", 2);
+const storage = multer.memoryStorage();
+const upload = multer({ storage }); // Initialize multer correctly
 // Function to add a new product
 const addProduct = async (req, res) => {
   const { name, price, description, Category:categoryName, isBestSeller=false} = req.body;
