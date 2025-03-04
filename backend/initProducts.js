@@ -2,6 +2,8 @@ const mongoose = require("mongoose");
 const Product = require("./models/product");
 const Category = require("./models/category")
 const dotenv = require("dotenv");
+const User = require("./models/User");
+const bcrypt = require("bcryptjs");
 
 dotenv.config();
 const necklaceItems = [
@@ -370,7 +372,7 @@ const ringsItems = [
     },
   ];
   
-  const categories = [
+const categories = [
     { name: "earrings" },
     { name: "necklaces" },
     { name: "rings" },
@@ -381,6 +383,13 @@ const allProducts = [
     ...earringsItems,
     ...ringsItems,
   ];
+  // Admin User Data
+const adminData = {
+  name: "Admin",
+  email: "admin@soulsun.com",
+  password: "admin123", // Change this to a strong password
+  role: "admin"
+};
   // Seed function
 const seedProducts = async () => {
     try {
@@ -409,7 +418,21 @@ const seedProducts = async () => {
       // Insert new product data
       await Product.insertMany(updatedProducts);
       console.log("Inserted product data successfully!");
+          // Check if admin already exists
+          const existingAdmin = await User.findOne({ email: adminData.email });
+
+          if (existingAdmin) {
+              console.log("Admin already exists.");
+          } else {
+              // Hash Password
+              adminData.password = await bcrypt.hash(adminData.password, 10);
   
+              // Create Admin User
+              const admin = new User(adminData);
+              await admin.save();
+  
+              console.log("Admin user created successfully.");
+          }
       // Disconnect from the database
       mongoose.connection.close();
     } catch (err) {
@@ -418,4 +441,4 @@ const seedProducts = async () => {
     }
   };
 
-module.exports = seedProducts
+module.exports = {seedProducts, allProducts, categories, adminData}

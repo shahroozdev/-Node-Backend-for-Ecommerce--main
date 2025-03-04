@@ -3,20 +3,25 @@
 const Category = require("../models/category");
 const Product = require("../models/product");
 const multer = require('multer');
-const path = require('path');
+const { put } = require("@vercel/blob");
+// const dotenv = require("dotenv");
 
+// dotenv.config();
 // Configure multer to store files in the 'public/images' folder
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, 'public/images'); // Destination folder
-  },
-  filename: (req, file, cb) => {
-    const uniqueName = `${Date.now()}-${file.originalname}`;
-    cb(null, uniqueName); // Using timestamp and original filename for unique name
-  }
-});
+// const storage = multer.diskStorage({
+//   destination: (req, file, cb) => {
+//     cb(null, 'public/images'); // Destination folder
+//   },
+//   filename: (req, file, cb) => {
+//     const uniqueName = `${Date.now()}-${file.originalname}`;
+//     cb(null, uniqueName); // Using timestamp and original filename for unique name
+//   }
+// });
 
-const upload = multer({ storage });
+// const upload = multer({ storage });
+
+// Multer setup for handling file uploads
+const upload = multer({ storage: multer.memoryStorage() }).array("images", 2);
 // Function to add a new product
 const addProduct = async (req, res) => {
   const { name, price, description, Category:categoryName, isBestSeller=false} = req.body;
@@ -32,15 +37,25 @@ const addProduct = async (req, res) => {
     return res.status(404).json({ message: "Category not found" });
   }
     // Prepare the image paths (relative to public folder)
-    const imagePaths = req.files.map(file => `/public/images/${file.filename}`);
+    // const imagePaths = req.files.map(file => `/public/images/${file.filename}`);
 
+          // Upload images to Vercel Blob
+          const imageUrls = await Promise.all(
+            req.files.map(async (file) => {
+              const blob = await put(`products/${Date.now()}-${file.originalname}`, file.buffer, {
+                access: "public",
+                // token:process.env.VERCEL_BLOB_READ_WRITE_TOKEN
+              });
+              return blob.url; // Save the public URL
+            })
+          );
   try {
     const newProduct = new Product({
       name,
       price,
       description,
       Category:categoryFound._id,
-      images:imagePaths,
+      images:imageUrls,
       isBestSeller,
     });
     await newProduct.save();
