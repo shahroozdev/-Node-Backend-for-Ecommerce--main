@@ -2,6 +2,7 @@ import { PenLine, Trash2 } from "lucide-react";
 // import { earringsItems, necklaceItems } from "../../../../constant";
 import dayjs from "dayjs";
 import apiClient from "../../../../lib/utils";
+import CustomImg from "../../../../components/ui/customImg";
 
 const ProductsTable = ({ showEditFormModal ,allProducts, getAllProducts, isLoading}) => {
   const handleDelete =async(id)=>{
@@ -60,9 +61,8 @@ const ProductsTable = ({ showEditFormModal ,allProducts, getAllProducts, isLoadi
                     />
                   </td> */}
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 flex items-center">
-                    <img
-                      src={process.env.REACT_APP_BASE_URL.slice(0, -1) +
-                        item?.images[0]}
+                    <CustomImg
+                      src={item?.images[0]}
                       className="w-10 min-w-10 h-10"
                       alt={item.name}
                       loading="lazy"
@@ -117,9 +117,8 @@ const ProductsTable = ({ showEditFormModal ,allProducts, getAllProducts, isLoadi
                   className="w-4 h-4 rounded border-gray-300 accent-blue-400"
                 /> */}
                 <span className="flex items-center">
-                  <img
-                    src={process.env.REACT_APP_BASE_URL.slice(0, -1) +
-                      item?.images[0]}
+                  <CustomImg
+                    src={item?.images[0]}
                     className="w-10 min-w-10 h-10"
                     alt={item.title}
                     loading="lazy"

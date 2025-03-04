@@ -10,6 +10,7 @@ import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { ChevronUp } from "lucide-react";
 import apiClient from "../../../lib/utils";
+import CustomImg from "../../../components/ui/customImg";
 
 const SoulsunCollection = () => {
   const swiperRef = useRef(null);
@@ -71,20 +72,14 @@ const SoulsunCollection = () => {
                             Best Seller
                           </small>
                         )}
-                        <img
-                          src={
-                            process.env.REACT_APP_BASE_URL.slice(0, -1) +
-                            item?.images[0]
-                          }
+                        <CustomImg
+                          src={item?.images[0]}
                           className="group-hover:opacity-100 opacity-100 absolute h-full w-[95%] group-hover:-translate-x-[105%] duration-300 object-cover"
                           alt={item?.name}
                           loading="lazy"
                         />
-                        <img
-                          src={
-                            process.env.REACT_APP_BASE_URL.slice(0, -1) +
-                            item?.images[1]
-                          }
+                        <CustomImg
+                          src={ item?.images[1]}
                           className="group-hover:opacity-100 opacity-100 absolute h-full w-[95%] translate-x-[105%] group-hover:translate-x-0 duration-300 object-cover"
                           alt={item?.name}
                           loading="lazy"

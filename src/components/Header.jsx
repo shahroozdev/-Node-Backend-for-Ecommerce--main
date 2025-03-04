@@ -14,6 +14,7 @@ import { Divide as Hamburger } from "hamburger-react";
 import DropDown from "./DropDown";
 import { useDebouncedCallback } from "use-debounce";
 import apiClient from "../lib/utils";
+import CustomImg from "./ui/customImg";
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -205,11 +206,8 @@ const Header = () => {
                     to={`/product-details/${item._id}`}
                     className="border border-primary rounded flex items-center gap-3"
                   >
-                    <img
-                      src={
-                        process.env.REACT_APP_BASE_URL.slice(0, -1) +
-                        item?.images[0]
-                      }
+                    <CustomImg
+                      src={item?.images[0]}
                       alt={item.name}
                       className="w-[3rem] h-[3rem] object-cover"
                     />

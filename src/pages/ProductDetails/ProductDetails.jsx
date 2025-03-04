@@ -17,6 +17,7 @@ import { ChevronUp } from "lucide-react";
 import toast from "react-hot-toast";
 import apiClient from "../../lib/utils";
 import Skeleton from "../../components/ui/skeleton";
+import CustomImg from "../../components/ui/customImg";
 
 // const productData = {
 //   name: "Sirena Hoops",
@@ -143,25 +144,18 @@ const ProductDetails = () => {
             >
               <SwiperSlide>
                 <div className="h-full">
-                  <img
-                    src={
-                      process.env.REACT_APP_BASE_URL.slice(0, -1) +
-                      productDetails?.images[0]
-                    }
+                  <CustomImg
+                    src={productDetails?.images[0]}
                     className="w-full h-full aspect-[3/4] sm:aspect-square object-center duration-300 object-cover"
                     alt={productDetails.name}
                     loading="lazy"
                   />
-                  {/* process.env.REACT_APP_BASE_URL.slice(0, -1)+ */}
                 </div>
               </SwiperSlide>
               <SwiperSlide>
                 <div className="h-full">
-                  <img
-                    src={
-                      process.env.REACT_APP_BASE_URL.slice(0, -1) +
-                      productDetails?.images[1]
-                    }
+                  <CustomImg
+                    src={ productDetails?.images[1]}
                     className="w-full h-full aspect-[3/4] sm:aspect-square object-center duration-300 object-cover"
                     alt={productDetails.name}
                     loading="lazy"
@@ -276,20 +270,14 @@ const ProductDetails = () => {
                         Best Seller
                       </small>
                     )}
-                    <img
-                      src={
-                        process.env.REACT_APP_BASE_URL.slice(0, -1) +
-                        item?.images[0]
-                      }
+                    <CustomImg
+                      src={item?.images[0]}
                       className="group-hover:opacity-100 opacity-100 absolute h-full w-[95%] group-hover:-translate-x-[105%] duration-300 object-cover"
                       alt={item?.name}
                       loading="lazy"
                     />
-                    <img
-                      src={
-                        process.env.REACT_APP_BASE_URL.slice(0, -1) +
-                        item?.images[1]
-                      }
+                    <CustomImg
+                      src={item?.images[1]}
                       className="group-hover:opacity-100 opacity-100 absolute h-full w-[95%] translate-x-[105%] group-hover:translate-x-0 duration-300 object-cover"
                       alt={item?.name}
                       loading="lazy"
@@ -373,20 +361,14 @@ const ProductDetails = () => {
                         Best Seller
                       </small>
                     )}
-                    <img
-                      src={
-                        process.env.REACT_APP_BASE_URL.slice(0, -1) +
-                        item?.images[0]
-                      }
+                    <CustomImg
+                      src={item?.images[0]}
                       className="group-hover:opacity-100 opacity-100 absolute h-full w-[95%] group-hover:-translate-x-[105%] duration-300 object-cover"
                       alt={item?.name}
                       loading="lazy"
                     />
-                    <img
-                      src={
-                        process.env.REACT_APP_BASE_URL.slice(0, -1) +
-                        item?.images[1]
-                      }
+                    <CustomImg
+                      src={item?.images[1]}
                       className="group-hover:opacity-100 opacity-100 absolute h-full w-[95%] translate-x-[105%] group-hover:translate-x-0 duration-300 object-cover"
                       alt={item?.name}
                       loading="lazy"

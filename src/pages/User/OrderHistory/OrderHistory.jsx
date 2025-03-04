@@ -3,6 +3,7 @@ import { necklaceItems } from "../../../constant";
 import { Link } from "react-router-dom";
 import apiClient from "../../../lib/utils";
 import dayjs from "dayjs";
+import CustomImg from "../../../components/ui/customImg";
 
 const OrderHistory = () => {
   // const orders = necklaceItems.slice(0, 3);
@@ -47,9 +48,8 @@ useEffect(()=>{
                     {ele.quantity}
                   </div>
                   <Link to={`/product-details/${ele._id}`}>
-                    <img
-                      src={process.env.REACT_APP_BASE_URL.slice(0, -1) +
-                        ele?.images[0]}
+                    <CustomImg
+                      src={ele?.images[0]}
                       className="object-cover aspect-square object-center"
                       alt={ele.name}
                     />

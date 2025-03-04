@@ -3,7 +3,7 @@ const Product = require("../models/product");
 const Category = require("../models/category");
 const { categories, allProducts, adminData } = require("../initProducts");
 const User = require("../models/User");
-const bcrypt = require("bcryptjs");
+// const bcrypt = require("bcryptjs");
 
 const checkDBHealth = async (req, res) => {
   try {

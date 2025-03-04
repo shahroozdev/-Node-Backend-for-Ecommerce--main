@@ -5,6 +5,7 @@ import cartimage from "../../assets/images/jewellery/pic-1.jpeg";
 import { Minus, Plus, TrashIcon } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
+import CustomImg from "../../components/ui/customImg";
 
 // const initialCartItems = [
 //   {
@@ -110,9 +111,8 @@ const Cart = () => {
                   className="flex flex-col gap-5 border w-full p-6 rounded-lg shadow-sm"
                 >
                   <Link to={`/product-details/${item._id}`}>
-                    <img
-                      src={process.env.REACT_APP_BASE_URL.slice(0, -1) +
-                        item?.images[0]}
+                    <CustomImg
+                      src={item?.images[0]}
                       alt={item.name}
                       className="w-full h-40 object-contain"
                     />

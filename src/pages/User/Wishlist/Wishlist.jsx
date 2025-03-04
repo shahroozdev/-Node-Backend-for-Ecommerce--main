@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Trash2 } from "lucide-react";
 import apiClient from "../../../lib/utils";
+import CustomImg from "../../../components/ui/customImg";
 
 const Wishlist = () => {
   const [items, setItems] = useState([]);
@@ -36,11 +37,8 @@ const Wishlist = () => {
                 to={`/product-details/${item._id}`}
                 className="overflow-hidden border border-primary rounded"
               >
-                <img
-                  src={
-                    process.env.REACT_APP_BASE_URL.slice(0, -1) +
-                    item?.images[0]
-                  }
+                <CustomImg
+                  src={item?.images[0]}
                   className="aspect-square object-cover"
                   alt={item.title}
                 />

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import apiClient from "../../../lib/utils";
+import CustomImg from "../../../components/ui/customImg";
 
 
 const CartItems = ({total, setTotal}) => {
@@ -42,11 +43,8 @@ const CartItems = ({total, setTotal}) => {
           >
             <div className="grid grid-cols-[30%_auto] gap-3">
               <Link to={`/product-details/${item._id}`}>
-                <img
-                  src={
-                    process.env.REACT_APP_BASE_URL.slice(0, -1) +
-                    item?.images[0]
-                  }
+                <CustomImg
+                  src={item?.images[0]}
                   className="h-full aspect-square object-center object-cover rounded-lg"
                   alt={item.name}
                 />
